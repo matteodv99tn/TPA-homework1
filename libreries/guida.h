@@ -33,4 +33,15 @@
         
     };
 
+    /*
+     * Funzione che inizializza una guida prismatica
+     * 
+     * @param lungh: lunghezza della guida prismatica che si vuole generare
+     * @param corsa: corsa dell'elemento prismatico
+     * @param dimx: dimensione orizzontale delle cerniere e dell'elemento prismatico
+     * @param dimy: dimensione verticale delle cerniere dell'elemento prismatico
+     * 
+     */
+    GuidaPrismatica guida_inizializzazione ( double lungh, double corsa, double dimx, double dimy);
+
 #endif
