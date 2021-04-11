@@ -42,6 +42,6 @@
      * @param dimy: dimensione verticale delle cerniere dell'elemento prismatico
      * 
      */
-    GuidaPrismatica guida_inizializzazione ( double lungh, double corsa, double dimx, double dimy);
+    GuidaPrismatica * guida_inizializzazione ( double lungh, double corsa, double dimx, double dimy);
 
 #endif
