@@ -15,7 +15,7 @@ target_link_libraries(mainEntry)
 
 # TESTS SECTION
 # Basically makes CMake read the CMakeLists.txt file contained in tests
-add_subdirectory(tests)
+# add_subdirectory(tests)
 
 
 # Explain what the PRIVATE, INTERFACE, PUBLIC keyword all mean
