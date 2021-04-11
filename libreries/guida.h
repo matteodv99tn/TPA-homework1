@@ -3,36 +3,59 @@
     #define _GUIDA_PRISMATICA_H_
 
     /*
+     * Definizione della struttura dei rettangoli utilizzati per la guida prismatica
+     * Struttura di supporto per la rappresentazione grafica del componente
+     * 
+     * @param dim_x: dimensione orizzontale del rettangolo
+     * @param dim_y: dimensione verticale del rettangolo
+     * 
+     */
+    struct GRect {
+        
+        float dim_x;
+        float dim_y;
+
+    };
+
+    /*
      *  Definzione della struttura per la guida prismatica
      * 
      *  @param lunghezza: lunghezza complessiva della barra della guida prismatica
      *  @param corsa: posizione relativa del glifo rispetto alla posizione iniziale
-     * 
-     *  @param dim_perno_x: dimensione orizzontale del perno mobile
-     *  @param dim_perno_y: dimensione verticale del perno mobile
-     * 
-     *  @param dim_base_x: dimensione orizzontale dei supporti di montaggio
-     *  @param dim_base_y: dimensione verticale dei supporti di montaggio
+     *  
+     *  @param pos_x: posizione orizzontale del centro della guida prismatica
+     *  @param pos_y: posizione verticale del centro della guida prismatica
+     *  
+     *  @param incastri: oggetto GRect che contiene le informazioni per quanto riguarda le cerniere del sistema
+     *  @param guida: oggetto GRect che contiene le informazioni per quanto riguarda la guida del componente
      * 
      *  @param spessore: spessore della guida prismatica
      *  @param alpha: inclinazione della guida rispetto all'orizzontale
      */
     struct GuidaPrismatica {
         
-        double lunghezza;
-        double corsa;
-        
-        double dim_perno_x;
-        double dim_perno_y;
-        
-        double dim_base_x;
-        double dim_base_y;
+        float lunghezza;
+        float corsa;
 
-        double spessore;
-        double alpha;
+        float pos_x;
+        float pos_y;
+        
+        GRect * incastri;
+        GRect * guida;
+
+        float spessore;
+        float alpha;
         
     };
 
+    /*
+     * Funzione che istanzia e inizializza il rettangolo
+     * 
+     * @param dimx: dimensione orizzontale del rettangolo
+     * @param dimy: dimensione verticale del rettangolo
+     */
+    GRect * grect_init( float dimx, float dimy );
+    
     /*
      * Funzione che inizializza una guida prismatica
      * 
@@ -42,7 +65,7 @@
      * @param dimy: dimensione verticale delle cerniere dell'elemento prismatico
      * 
      */
-    GuidaPrismatica * guida_inizializzazione ( double lungh, double corsa, double dimx, double dimy);
+    GuidaPrismatica * guida_init ( float lungh, float corsa, float dimx, float dimy);
 
     /*
      * Funzione che permette di deallocare correttamente l'istanza di una guida prismatica creata

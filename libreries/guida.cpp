@@ -1,7 +1,21 @@
 
 #include "guida.h"
 
-GuidaPrismatica* guida_inizializzazione ( double lungh, double corsa, double dimx, double dimy){
+GRect * grect_init( float dimx, float dimy ){
+
+    // Creo l'istanza del rettangolo
+    GRect * rect = new GRect;
+
+    // Imposto le dimensioni in accordo ai parametri in ingresso
+    rect->dim_x = dimx;
+    rect->dim_y = dimy;
+
+    // Ritorno l'oggetto istanziato
+    return rect;
+
+}
+
+GuidaPrismatica* guida_init ( float lungh, float corsa, float dimx, float dimy){
 
     // Creo l'istanza della guida prismatica
     GuidaPrismatica* guida = new GuidaPrismatica;
@@ -10,11 +24,8 @@ GuidaPrismatica* guida_inizializzazione ( double lungh, double corsa, double dim
     guida->lunghezza = lungh;
     guida->corsa = corsa;
 
-    guida->dim_base_x = dimx;
-    guida->dim_base_y = dimy;
-
-    guida->dim_perno_x = dimx;
-    guida->dim_perno_y = dimy;
+    guida->incastri = grect_init( dimx, dimy );
+    guida->guida = grect_init( dimx, dimy );
 
     guida->corsa = dimy / 3;
     guida->alpha = 0;
@@ -25,6 +36,9 @@ GuidaPrismatica* guida_inizializzazione ( double lungh, double corsa, double dim
 }
 
 void guida_distruggi ( GuidaPrismatica * guida ){
+
+    delete guida->incastri;
+    delete guida->guida;
 
     delete guida;
 
