@@ -23,3 +23,9 @@ GuidaPrismatica* guida_inizializzazione ( double lungh, double corsa, double dim
     return guida;
 
 }
+
+void guida_distruggi ( GuidaPrismatica * guida ){
+
+    delete guida;
+
+}

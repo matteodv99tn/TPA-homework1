@@ -44,4 +44,9 @@
      */
     GuidaPrismatica * guida_inizializzazione ( double lungh, double corsa, double dimx, double dimy);
 
+    /*
+     * Funzione che permette di deallocare correttamente l'istanza di una guida prismatica creata
+     */
+    void guida_distruggi ( GuidaPrismatica * guida );
+    
 #endif
