@@ -14,3 +14,7 @@ La roadmap deve essere intesa come un cronoprogramma da seguire per la fase di s
 
 
 ## Note di rilascio
+### V1.0.0
+- Creata la struttura `GuidaPrismatica` che contiene i dati per il rendering della figura
+- Aggiunta la funzione `guida_init` per l'inizializzazione dell'oggetto contenente le informazioni per il rendering
+- Aggiunta la funzione `guida_distruggi` per la rimozione dell'oggetto istanziato
