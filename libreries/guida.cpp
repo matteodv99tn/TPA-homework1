@@ -15,12 +15,15 @@ GRect * grect_init( float dimx, float dimy ){
 
 }
 
-GuidaPrismatica* guida_init ( float lungh, float corsa, float dimx, float dimy){
+GuidaPrismatica* guida_init ( float posx, float posy, float lungh, float corsa, float dimx, float dimy){
 
     // Creo l'istanza della guida prismatica
     GuidaPrismatica* guida = new GuidaPrismatica;
 
     // Associo le grandezze in input alle relative grandezze della struct
+    guida->pos_x = posx;
+    guida->pos_y = posy;
+
     guida->lunghezza = lungh;
     guida->corsa = corsa;
 

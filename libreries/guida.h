@@ -59,13 +59,15 @@
     /*
      * Funzione che inizializza una guida prismatica
      * 
+     * @param posx: posizione orizzontale
+     * @param posy: posizione verticale
      * @param lungh: lunghezza della guida prismatica che si vuole generare
      * @param corsa: corsa dell'elemento prismatico
      * @param dimx: dimensione orizzontale delle cerniere e dell'elemento prismatico
      * @param dimy: dimensione verticale delle cerniere dell'elemento prismatico
      * 
      */
-    GuidaPrismatica * guida_init ( float lungh, float corsa, float dimx, float dimy);
+    GuidaPrismatica * guida_init ( float posx, float posy, float lungh, float corsa, float dimx, float dimy);
 
     /*
      * Funzione che permette di deallocare correttamente l'istanza di una guida prismatica creata
