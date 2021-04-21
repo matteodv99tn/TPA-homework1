@@ -2,6 +2,8 @@
 
     #define _GUIDA_PRISMATICA_H_
 
+    #include <iostream>
+
     /*
      * Definizione della struttura dei rettangoli utilizzati per la guida prismatica
      * Struttura di supporto per la rappresentazione grafica del componente
@@ -74,4 +76,8 @@
      */
     void guida_distruggi ( GuidaPrismatica * guida );
     
+    /*
+     * Funzione che permette di convertire un oggetto GuidaPrismatica in una stringa SVG
+     */
+    std::string guida_to_SVG( GuidaPrismatica * guida );
 #endif
