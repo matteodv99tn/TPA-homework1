@@ -60,10 +60,15 @@ void guida_distruggi ( GuidaPrismatica * guida ){
 // Funzione che genera la corretta matrice di roto-traslazione della guida pristmatica
 string guida_matricetrasformazione ( GuidaPrismatica * guida ){
 
+    // Basato su:
+    // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform
+
+    // Inizializzo la stringa contenente le informazioni sulla trasformazione
     string str = "";
 
     str += "transform=\"matrix(";
 
+    // Popolo la matrice con le informazioni presenti nella struttura della guida prismatica
     str += to_string( cos( guida->alpha )  ) + " ";
     str += to_string( sin( guida->alpha )  ) + " ";
     str += to_string( -sin( guida->alpha ) ) + " ";
@@ -71,6 +76,7 @@ string guida_matricetrasformazione ( GuidaPrismatica * guida ){
     str += to_string( guida->pos_x ) + " ";
     str += to_string( guida->pos_y ) + ")\" ";
 
+    // Restituisco le informazioni sulla matrice di trasformazione
     return str;
 }
 
