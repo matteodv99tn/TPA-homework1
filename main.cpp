@@ -15,7 +15,9 @@ int main() {
 
     myguida = guida_init(200,200,250, 50, 20, 60);
 
-    // string svgcode = guida_to_SVGstring( myguida );
+    // Modifico l'inclinazione della guida
+    myguida->alpha = 0.3;
+
     guida_to_SVG( myguida , "test");
 
     cout << "Informazioni sulla guida salvata:" << endl;
