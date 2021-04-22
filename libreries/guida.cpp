@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <math.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -65,6 +66,49 @@ void guida_visualizza_info ( GuidaPrismatica * guida ){
     cout << "> dimensione guida \t" << guida->guida->dim_x << "x" << guida->guida->dim_y << endl;
     cout << "> spessore \t\t" << guida->spessore << endl;
 
+}
+
+int guida_controllaintegrita (GuidaPrismatica * guida ){
+
+    // Controllo che la lunghezza della guida prismatica sia un valore positivo
+    if(guida->lunghezza <= 0) {
+
+        guida->lunghezza = 0;
+        return 1;
+
+    }
+
+    // Controllo sulla dimensione delle cerniere
+    if( guida->incastri->dim_x <= 0 || guida->incastri->dim_y <= 0 ){
+
+        guida->incastri->dim_x = 0;
+        guida->incastri->dim_y = 0;
+        return 2;
+
+    }
+
+    // Controllo sulla dimensione della guida prismatica del sistema
+    if( guida->guida->dim_x <= 0 || guida->guida->dim_y <= 0 ){
+
+        guida->guida->dim_x = 0;
+        guida->guida->dim_y = 0;
+        return 3;
+
+    }
+
+    // Aggiusto lo spessore del cilindro di scorrimento
+    // Se lo spessore è maggiore della lunghezza delle cerniere allora la riduco al valore minimo trovato
+    // Se la corsa è negativa o nulla la pongo ad un terzo della lunghezza verticale minima delle cerniere
+    int spess_min = min( guida->incastri->dim_y, guida->guida->dim_y );
+    
+    if(guida->spessore > spess_min)
+        guida->spessore = spess_min;
+    
+    if(guida->spessore <= 0)
+        guida->spessore = spess_min / 3;
+        
+
+    return 0;
 }
 
 // Funzione che genera la corretta matrice di roto-traslazione della guida pristmatica

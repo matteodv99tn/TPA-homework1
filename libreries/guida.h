@@ -82,9 +82,34 @@
     void guida_visualizza_info ( GuidaPrismatica * guida );
 
     /*
-     * Funzione che permette di convertire un oggetto GuidaPrismatica in una stringa SVG
+     * Funzione che permette di controllare l'integrità strutturale di una guida prismatica, correggendo eventuali errori
+     * 
+     * @param guida: guida prismatica della quale controllare l'integrità
+     * 
+     * @errorcode 0: la guida prismatica è corretta
+     * @errorcode 1: lunghezza della guida negativa o nulla
+     * @errorcode 2: dimensioni delle cerniere invalide
+     * @errorcode 3; dimensioni della guida prismatica invalide
+     * 
+     * Correzioni effettuate automaticamente:
+     *  > spostare la corsa al valore tollerato più plausibile alla realtà
      */
-    std::string guida_to_SVGstring( GuidaPrismatica * guida );
+    int guida_controlla_integrita ( GuidaPrismatica * guida );
 
+    /*
+     * Funzione che permette di convertire un oggetto GuidaPrismatica in una stringa SVG
+     * 
+     * @param guida: guida prismatica che si vuole convertire in sorgente SVG
+     * 
+     */
+    std::string guida_to_SVGstring( GuidaPrismatica * guida );  
+
+    /*
+     * Funzione che permette di salvare in un file SVG il disegno della guida prismatica.
+     * 
+     * @param guida: guida prismatica da renderizzare
+     * @param nome_file: nome del file SVG contenente il disegno
+     * 
+     */
     void guida_to_SVG( GuidaPrismatica * guida , std::string nome_file );
 #endif
