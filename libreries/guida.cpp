@@ -39,7 +39,7 @@ GuidaPrismatica* guida_init ( float posx, float posy, float lungh, float corsa, 
     guida->incastri = grect_init( dimx, dimy );
     guida->guida = grect_init( dimx, dimy );
 
-    guida->corsa = dimy / 3;
+    guida->spessore = dimy / 3;
     guida->alpha = 0;
 
     // Ritorno l'oggetto della guida inizializzata
@@ -78,6 +78,17 @@ string guida_to_SVGstring( GuidaPrismatica * guida ){
 
     // Inizializzazione della stringa da resistuire per la conversione in SVG
     string str = "";
+    string str_trasf = guida_matricetrasformazione( guida );
+
+    // Disegno del cilindro sul quale scorrerà la guida
+    str += "\t";
+    str += "<rect  x = \"" + to_string(-guida->lunghezza/2) + "\" ";
+    str += "y=\"" + to_string( - guida->spessore / 2 ) + "\" ";
+    str += "width=\"" + to_string(guida->lunghezza) + "\" ";
+    str += "height=\"" + to_string(guida->spessore) + "\" ";
+    str += "style=\"fill:rgb(210,210,210);stroke-width:1;stroke:rgb(0,0,0)\" ";
+    str += str_trasf;
+    str += " /> \n";
 
     return str;
 
@@ -89,11 +100,13 @@ void guida_to_SVG (GuidaPrismatica * guida , string nome_file ){
 
     ofstream mySVG( nome_file + ".svg");
     
-    mySVG << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << endl;
+    mySVG << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << endl << endl;
+
+    mySVG << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"600\">" << endl;
 
     mySVG << guida_to_SVGstring( guida );
 
-    mySVG << "<\svg";
+    mySVG << "</svg>";
 
     mySVG.close();
 
