@@ -126,6 +126,16 @@ string guida_to_SVGstring( GuidaPrismatica * guida ){
     str += str_trasf;
     str += " /> \n";
 
+    // Perno 
+    str += "\t";
+    str += "<rect  x = \"" + to_string( -guida->lunghezza/2 + guida->corsa - guida->guida->dim_x/2) + "\" ";
+    str += "y=\"" + to_string( - guida->guida->dim_y / 2  ) + "\" ";
+    str += "width=\"" + to_string(guida->guida->dim_x) + "\" ";
+    str += "height=\"" + to_string(guida->guida->dim_y) + "\" ";
+    str += "style=\"fill:rgb(140,140,140);stroke-width:3;stroke:rgb(0,0,0)\" ";
+    str += str_trasf;
+    str += " /> \n";
+
     return str;
 
 }
