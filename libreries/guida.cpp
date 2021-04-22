@@ -6,6 +6,7 @@
 #include <streambuf>
 #include <string>
 #include <sstream>
+#include <math.h>
 
 using namespace std;
 
@@ -55,35 +56,28 @@ void guida_distruggi ( GuidaPrismatica * guida ){
 
 }
 
-// Funzione ausiliaria per disegnare un rettangolo
-string rect_draw( float posx, float posy, GRect * rect){
+
+// Funzione che genera la corretta matrice di roto-traslazione della guida pristmatica
+string guida_matricetrasformazione ( GuidaPrismatica * guida ){
 
     string str = "";
 
-    str += "<rext x = \"";
-    str += to_string(posx);
-    str += "\" y = \"";
-    str += to_string(posy);
-    str += "\" ";
+    str += "transform=\"matrix(";
 
-    str += "width=\"40\" height=\"20\" style=\"fill:rgb(0,200,0);stroke-width:3;stroke:rgb(0,0,0)\" />";
+    str += to_string( cos( guida->alpha )  ) + " ";
+    str += to_string( sin( guida->alpha )  ) + " ";
+    str += to_string( -sin( guida->alpha ) ) + " ";
+    str += to_string( cos( guida->alpha )  ) + " ";
+    str += to_string( guida->pos_x ) + " ";
+    str += to_string( guida->pos_y ) + ")\" ";
 
-    str += "\n";
     return str;
-
 }
 
 string guida_to_SVGstring( GuidaPrismatica * guida ){
 
     // Inizializzazione della stringa da resistuire per la conversione in SVG
     string str = "";
-    str += "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"600\"> \n";
-
-    str += rect_draw( guida->pos_x - (guida->corsa / 2 ), guida->pos_y, guida->incastri);
-
-    str += "</svg>";
-    
-    cout << "+++" << endl << str << endl << "+++" << endl;
 
     return str;
 
@@ -93,13 +87,14 @@ void guida_to_SVG (GuidaPrismatica * guida , string nome_file ){
 
     string str = guida_to_SVGstring( guida );
 
-    ofstream mySVG( "ciao.svg");
+    ofstream mySVG( nome_file + ".svg");
     
-    cout << "Stringa da salvare:" << endl;
+    mySVG << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << endl;
 
-    mySVG << str;
+    mySVG << guida_to_SVGstring( guida );
 
-    cout << endl << "--------" << endl;
+    mySVG << "<\svg";
+
     mySVG.close();
 
 }
