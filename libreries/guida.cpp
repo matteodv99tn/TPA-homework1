@@ -56,6 +56,16 @@ void guida_distruggi ( GuidaPrismatica * guida ){
 
 }
 
+void guida_visualizza_info ( GuidaPrismatica * guida ){
+
+    cout << "> lunghezza \t\t" << guida->lunghezza << endl;
+    cout << "> corsa \t\t" << guida->corsa << endl;
+    cout << "> coordinate centro \t(" << guida->pos_x << " , " << guida->pos_y << ")" << endl;
+    cout << "> dimensione cerniera \t" << guida->incastri->dim_x << "x" << guida->incastri->dim_y << endl;
+    cout << "> dimensione guida \t" << guida->guida->dim_x << "x" << guida->guida->dim_y << endl;
+    cout << "> spessore \t\t" << guida->spessore << endl;
+
+}
 
 // Funzione che genera la corretta matrice di roto-traslazione della guida pristmatica
 string guida_matricetrasformazione ( GuidaPrismatica * guida ){

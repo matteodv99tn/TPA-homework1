@@ -75,7 +75,12 @@
      * Funzione che permette di deallocare correttamente l'istanza di una guida prismatica creata
      */
     void guida_distruggi ( GuidaPrismatica * guida );
-    
+
+    /*
+     * Funzione che permette di visualizzare a schermo le informazioni sulla guida prismatica
+     */    
+    void guida_visualizza_info ( GuidaPrismatica * guida );
+
     /*
      * Funzione che permette di convertire un oggetto GuidaPrismatica in una stringa SVG
      */
