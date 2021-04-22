@@ -1,6 +1,13 @@
 
 #include "guida.h"
 #include <iostream>
+#include <string.h> 
+#include <fstream>
+#include <streambuf>
+#include <string>
+#include <sstream>
+
+using namespace std;
 
 GRect * grect_init( float dimx, float dimy ){
 
@@ -49,11 +56,15 @@ void guida_distruggi ( GuidaPrismatica * guida ){
 }
 
 // Funzione ausiliaria per disegnare un rettangolo
-std::string rect_draw( float posx, float posy, GRect * rect){
+string rect_draw( float posx, float posy, GRect * rect){
 
-    std::string str = "";
+    string str = "";
 
-    str += "<rext x = \"" + (int) posx + "\" y = \"" + (int) posy + "\" ";
+    str += "<rext x = \"";
+    str += to_string(posx);
+    str += "\" y = \"";
+    str += to_string(posy);
+    str += "\" ";
 
     str += "width=\"40\" height=\"20\" style=\"fill:rgb(0,200,0);stroke-width:3;stroke:rgb(0,0,0)\" />";
 
@@ -62,18 +73,33 @@ std::string rect_draw( float posx, float posy, GRect * rect){
 
 }
 
-std::string guida_to_SVG( GuidaPrismatica * guida ){
+string guida_to_SVGstring( GuidaPrismatica * guida ){
 
     // Inizializzazione della stringa da resistuire per la conversione in SVG
-    std::string str = "";
+    string str = "";
     str += "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"600\"> \n";
 
     str += rect_draw( guida->pos_x - (guida->corsa / 2 ), guida->pos_y, guida->incastri);
 
     str += "</svg>";
-
-
+    
+    cout << "+++" << endl << str << endl << "+++" << endl;
 
     return str;
+
+}
+
+void guida_to_SVG (GuidaPrismatica * guida , string nome_file ){
+
+    string str = guida_to_SVGstring( guida );
+
+    ofstream mySVG( "ciao.svg");
+    
+    cout << "Stringa da salvare:" << endl;
+
+    mySVG << str;
+
+    cout << endl << "--------" << endl;
+    mySVG.close();
 
 }

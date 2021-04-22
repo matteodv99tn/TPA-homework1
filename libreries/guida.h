@@ -79,5 +79,7 @@
     /*
      * Funzione che permette di convertire un oggetto GuidaPrismatica in una stringa SVG
      */
-    std::string guida_to_SVG( GuidaPrismatica * guida );
+    std::string guida_to_SVGstring( GuidaPrismatica * guida );
+
+    void guida_to_SVG( GuidaPrismatica * guida , std::string nome_file );
 #endif
