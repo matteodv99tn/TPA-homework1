@@ -96,13 +96,33 @@ string guida_to_SVGstring( GuidaPrismatica * guida ){
     string str = "";
     string str_trasf = guida_matricetrasformazione( guida );
 
-    // Disegno del cilindro sul quale scorrerà la guida
+    // Cilindro sul quale scorrerà la guida
     str += "\t";
     str += "<rect  x = \"" + to_string(-guida->lunghezza/2) + "\" ";
     str += "y=\"" + to_string( - guida->spessore / 2 ) + "\" ";
     str += "width=\"" + to_string(guida->lunghezza) + "\" ";
     str += "height=\"" + to_string(guida->spessore) + "\" ";
     str += "style=\"fill:rgb(210,210,210);stroke-width:1;stroke:rgb(0,0,0)\" ";
+    str += str_trasf;
+    str += " /> \n";
+
+    // Prima cerniera
+    str += "\t";
+    str += "<rect  x = \"" + to_string(-guida->lunghezza/2 - guida->incastri->dim_x/2) + "\" ";
+    str += "y=\"" + to_string( - guida->incastri->dim_y / 2  ) + "\" ";
+    str += "width=\"" + to_string(guida->incastri->dim_x) + "\" ";
+    str += "height=\"" + to_string(guida->incastri->dim_y) + "\" ";
+    str += "style=\"fill:rgb(140,140,140);stroke-width:3;stroke:rgb(0,0,0)\" ";
+    str += str_trasf;
+    str += " /> \n";
+
+    // Seconda cerniera
+    str += "\t";
+    str += "<rect  x = \"" + to_string( guida->lunghezza/2 - guida->incastri->dim_x/2) + "\" ";
+    str += "y=\"" + to_string( - guida->incastri->dim_y / 2  ) + "\" ";
+    str += "width=\"" + to_string(guida->incastri->dim_x) + "\" ";
+    str += "height=\"" + to_string(guida->incastri->dim_y) + "\" ";
+    str += "style=\"fill:rgb(140,140,140);stroke-width:3;stroke:rgb(0,0,0)\" ";
     str += str_trasf;
     str += " /> \n";
 
