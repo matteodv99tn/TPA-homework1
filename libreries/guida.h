@@ -68,6 +68,8 @@
      * @param dimx: dimensione orizzontale delle cerniere e dell'elemento prismatico
      * @param dimy: dimensione verticale delle cerniere dell'elemento prismatico
      * 
+     * restituisce un oggetto NULL se l'inizializzazione non è andata a buon fine
+     * 
      */
     GuidaPrismatica * guida_init ( float posx, float posy, float lungh, float corsa, float dimx, float dimy);
 

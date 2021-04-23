@@ -43,12 +43,21 @@ GuidaPrismatica* guida_init ( float posx, float posy, float lungh, float corsa, 
     guida->spessore = dimy / 3;
     guida->alpha = 0;
 
+    if ( guida_controlla_integrita( guida ) != 0) {
+
+        guida_distruggi(guida);
+        return NULL;
+
+    };
+
     // Ritorno l'oggetto della guida inizializzata
     return guida;
 
 }
 
 void guida_distruggi ( GuidaPrismatica * guida ){
+
+    if( guida == NULL ) return;
 
     delete guida->incastri;
     delete guida->guida;
@@ -58,6 +67,11 @@ void guida_distruggi ( GuidaPrismatica * guida ){
 }
 
 void guida_visualizza_info ( GuidaPrismatica * guida ){
+
+    if(guida == NULL){
+        cout << "Oggetto non valido" << endl;
+        return;
+    }
 
     cout << "> lunghezza \t\t" << guida->lunghezza << endl;
     cout << "> corsa \t\t" << guida->corsa << endl;
@@ -145,6 +159,8 @@ string guida_matricetrasformazione ( GuidaPrismatica * guida ){
 }
 
 string guida_to_SVGstring( GuidaPrismatica * guida ){
+
+    if(guida == NULL) return "";
 
     // Inizializzazione della stringa da resistuire per la conversione in SVG
     string str = "";
