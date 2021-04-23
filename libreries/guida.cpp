@@ -68,7 +68,7 @@ void guida_visualizza_info ( GuidaPrismatica * guida ){
 
 }
 
-int guida_controllaintegrita (GuidaPrismatica * guida ){
+int guida_controlla_integrita (GuidaPrismatica * guida ){
 
     // Controllo che la lunghezza della guida prismatica sia un valore positivo
     if(guida->lunghezza <= 0) {
@@ -106,7 +106,17 @@ int guida_controllaintegrita (GuidaPrismatica * guida ){
     
     if(guida->spessore <= 0)
         guida->spessore = spess_min / 3;
-        
+
+    // Controllo la posizione della corsa che deve essere entro un range prefissato
+    float min_corsa = guida->incastri->dim_x / 2 + guida->guida->dim_x/2;
+    float max_corsa = guida->lunghezza - guida->incastri->dim_x / 2 - guida->guida->dim_x/2;
+    
+    if(guida->corsa > max_corsa) 
+        guida->corsa = max_corsa;
+
+    if(guida->corsa < min_corsa) 
+        guida->corsa = min_corsa;
+
 
     return 0;
 }
