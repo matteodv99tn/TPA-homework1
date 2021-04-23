@@ -13,10 +13,9 @@ int main() {
     cout << "> dimesione orizzontale di cerniere e guida: 10" << endl;
     cout << "> dimesione verticale di cerniere e guida: 10" << endl << endl;
 
-    myguida = guida_init(200,200,250, 50, 20, 60);
+    myguida = guida_init(200,200,250, 100, 30, 60);
 
-    // Modifico l'inclinazione della guida
-    myguida->alpha = 0.3;
+    guida_modifica( myguida );
 
     guida_to_SVG( myguida , "test");
 

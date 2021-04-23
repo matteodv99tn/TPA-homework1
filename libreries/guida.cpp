@@ -82,6 +82,53 @@ void guida_visualizza_info ( GuidaPrismatica * guida ){
 
 }
 
+// Funzione ausiliaria per la modifica della lunghezza
+void guida_modifica_lunghezza (GuidaPrismatica * guida ){
+    float temp;
+
+    cout << "Inserire 0 per mantenere invariato il valore" << endl;
+    cout << "Inserire un nuovo valore di lunghezza (attuale: " << guida->lunghezza << "): ";
+    cin >> temp;
+    
+    if(temp > 0 ){
+        guida->lunghezza = temp;
+    }
+
+    cout << "Inserire un nuovo valore di corsa (attuale: " << guida->corsa << "): ";
+    cin >> temp;
+    guida->corsa = temp;
+}
+
+void guida_modifica( GuidaPrismatica * guida){
+
+    int scelta = 0;
+
+    do{
+
+        cout << endl << "Operazioni che è possibile effettuare:" << endl;
+        cout << " 1. modificare la lunghezza e la corsa del sistema" << endl;
+        cout << " 0. per uscire dal menu di modifica" << endl;
+        cout << "Scelta effettuata: ";
+        cin >> scelta;
+
+        switch( scelta ){
+
+            case 1:
+                guida_modifica_lunghezza( guida );
+                break;
+
+            default:
+                if( scelta != 0 )
+                    cout << "Ingresso non valido!" << endl;
+                break;
+        }
+
+
+    } while( scelta  != 0 );
+
+    return;
+}
+
 int guida_controlla_integrita (GuidaPrismatica * guida ){
 
     // Controllo che la lunghezza della guida prismatica sia un valore positivo
@@ -131,6 +178,13 @@ int guida_controlla_integrita (GuidaPrismatica * guida ){
     if(guida->corsa < min_corsa) 
         guida->corsa = min_corsa;
 
+    // Controllo che le dimensioni delle cerniere e della guida non superi la lunghezza complessiva della struttura; in caso riaggiusto
+    if( guida->incastri->dim_x + guida->guida->dim_x > guida->lunghezza){
+
+        guida->incastri->dim_x = guida->lunghezza / 2;
+        guida->guida->dim_x = guida->lunghezza / 2;
+
+    }
 
     return 0;
 }
@@ -213,7 +267,7 @@ string guida_to_SVGstring( GuidaPrismatica * guida ){
 void guida_to_SVG (GuidaPrismatica * guida , string nome_file ){
 
     string str = guida_to_SVGstring( guida );
-
+    
     ofstream mySVG( nome_file + ".svg");
     
     mySVG << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << endl << endl;

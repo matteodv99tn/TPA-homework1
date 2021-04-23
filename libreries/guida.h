@@ -84,6 +84,14 @@
     void guida_visualizza_info ( GuidaPrismatica * guida );
 
     /*
+     * Funzione interattiva che da linea di comando permette di modificare dei parametri della guida prismatica
+     * 
+     * @param guida: oggetto guida prismatica da modificare
+     * 
+     */
+    void guida_modifica( GuidaPrismatica * guida);
+
+    /*
      * Funzione che permette di controllare l'integrità strutturale di una guida prismatica, correggendo eventuali errori
      * 
      * @param guida: guida prismatica della quale controllare l'integrità
