@@ -121,6 +121,28 @@ void guida_modifica_cerniera (GuidaPrismatica * guida){
     if(temp != 0) guida->incastri->dim_y = temp;
 }
 
+// Funzione ausiliaria per modificare le proprietà della guida
+void guida_modifica_guida (GuidaPrismatica * guida){
+
+    float temp;
+
+    cout << "Inserire 0 per mantenere invariato il valore" << endl;
+    
+    cout << "Inserire la dimensione orizzontale della guida (attuale: " << guida->guida->dim_x << "): ";
+    do {
+        cin >> temp;
+    } while (temp < 0);
+    
+    if(temp != 0) guida->guida->dim_x = temp;
+    
+    cout << "Inserire la dimensione verticale della guida (attuale: " << guida->incastri->dim_y << "): ";
+    do {
+        cin >> temp;
+    } while (temp < 0);
+    
+    if(temp != 0) guida->incastri->dim_y = temp;
+}
+
 void guida_modifica( GuidaPrismatica * guida){\
 
     int scelta = 0;
@@ -129,7 +151,8 @@ void guida_modifica( GuidaPrismatica * guida){\
 
         cout << endl << "Operazioni che è possibile effettuare:" << endl;
         cout << " 1. modificare la lunghezza e la corsa del sistema" << endl;
-        cout << " 2. modificare le dimensioni delle cerniere del robot" << endl;
+        cout << " 2. modificare le proprietà delle cerniere del componente" << endl;
+        cout << " 3. modificare le proprietà della guida del componente" << endl;
         cout << " 0. per uscire dal menu di modifica" << endl;
         cout << "Scelta effettuata: ";
         cin >> scelta;
@@ -144,6 +167,11 @@ void guida_modifica( GuidaPrismatica * guida){\
             case 2:
                 guida_modifica_cerniera( guida );
                 guida_controlla_integrita( guida );
+                break;
+
+            case 3: 
+                guida_modifica_guida( guida );
+                guida_controlla_integrita;
                 break;
 
             default:
