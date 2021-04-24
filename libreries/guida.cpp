@@ -454,3 +454,38 @@ void guida_to_SVG (GuidaPrismatica * guida , string nome_file ){
     mySVG.close();
 
 }
+
+void guida_salva_file ( GuidaPrismatica * guida, string nome_file ){
+
+    ofstream outfile( nome_file + ".txt");
+
+    outfile << guida->lunghezza << " " << guida->corsa << " " << guida->spessore << endl;
+
+    outfile << guida->pos_x << " " << guida->pos_y << " " << guida->alpha << endl;
+
+    outfile << guida->incastri->dim_x << " " << guida->incastri->dim_y << " " << guida->incastri->colore[0] << " " << guida->incastri->colore[1] << " " << guida->incastri->colore[2] << endl;
+    outfile << guida->guida->dim_x << " " << guida->guida->dim_y << " " << guida->guida->colore[0] << " " << guida->guida->colore[1] << " " << guida->guida->colore[2];
+
+}
+
+GuidaPrismatica * guida_carica_file( string nome_file ){
+
+    ifstream infile( nome_file + ".txt");
+
+    GuidaPrismatica * guida = new GuidaPrismatica;
+    guida->incastri = new GRect;
+    guida->guida = new GRect;
+
+    infile >> guida->lunghezza >> guida->corsa >> guida->spessore;
+
+    infile >> guida->pos_x >> guida->pos_y >> guida->alpha;
+
+    infile >> guida->incastri->dim_x >> guida->incastri->dim_y >> guida->incastri->colore[0] >> guida->incastri->colore[1] >> guida->incastri->colore[2];
+    infile >> guida->guida->dim_x >> guida->guida->dim_y >> guida->guida->colore[0] >> guida->guida->colore[1] >> guida->guida->colore[2];
+
+    infile.close();
+    
+    return guida;
+
+}
+

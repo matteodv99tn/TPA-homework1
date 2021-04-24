@@ -65,10 +65,7 @@
     GRect * grect_init( float dimx, float dimy );
     
     /*
-     * Funzione che inizializza una guida prismatica
-     * 
-     * @param posx: posizione orizzontale
-     * @param posy: posizione verticale
+     * Funzione che inizializza una guida pristring
      * @param lungh: lunghezza della guida prismatica che si vuole generare
      * @param corsa: corsa dell'elemento prismatico
      * @param dimx: dimensione orizzontale delle cerniere e dell'elemento prismatico
@@ -186,4 +183,21 @@
      * 
      */
     void guida_to_SVG( GuidaPrismatica * guida , std::string nome_file );
+
+    /*
+     * Funzione che permette il salvataggio di una guida in un file di testo .txt
+     * 
+     * @param guida: guida prismatica da salvare
+     * @param nome_file: nome del file sul quale salvare le informazioni
+     */
+    void guida_salva_file ( GuidaPrismatica * guida, std::string nome_file );
+
+    /*
+     * Funzione che permette di creare una struttura GuidaPrismatica partendo da un file di testo correttamente redatto
+     * 
+     * @param nome_file: nome del file (senza estensione) da caricare
+     * 
+     */
+    GuidaPrismatica * guida_carica_file( std::string nome_file );
+
 #endif
