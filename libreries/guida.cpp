@@ -222,7 +222,7 @@ void guida_modifica_guida ( GuidaPrismatica * guida ){
     cout << "Modificare i colori? [s/n]";
     do{
         cin >> scelta;
-    } while (scelta != 's' || scelta != 'n');
+    } while (scelta != 's' && scelta != 'n');
 
     if (scelta == 's'){
         unsigned int col[3];
@@ -385,6 +385,19 @@ string guida_matricetrasformazione ( GuidaPrismatica * guida ){
     return str;
 }
 
+string guida_stilerettangolo ( GRect * rett ){
+    
+    string str = "";
+
+    str += "style=\"fill:rgb(";
+    str += to_string(rett->colore[0]) + ",";
+    str += to_string(rett->colore[1]) + ",";
+    str += to_string(rett->colore[2]);
+    str += ");stroke-width:3;stroke:rgb(0,0,0)\" ";
+
+    return str;
+}
+
 string guida_to_SVGstring( GuidaPrismatica * guida ){
 
     if(guida == NULL) return "";
@@ -409,7 +422,7 @@ string guida_to_SVGstring( GuidaPrismatica * guida ){
     str += "y=\"" + to_string( - guida->incastri->dim_y / 2  ) + "\" ";
     str += "width=\"" + to_string(guida->incastri->dim_x) + "\" ";
     str += "height=\"" + to_string(guida->incastri->dim_y) + "\" ";
-    str += "style=\"fill:rgb(140,140,140);stroke-width:3;stroke:rgb(0,0,0)\" ";
+    str += guida_stilerettangolo( guida->incastri);
     str += str_trasf;
     str += " /> \n";
 
@@ -419,7 +432,7 @@ string guida_to_SVGstring( GuidaPrismatica * guida ){
     str += "y=\"" + to_string( - guida->incastri->dim_y / 2  ) + "\" ";
     str += "width=\"" + to_string(guida->incastri->dim_x) + "\" ";
     str += "height=\"" + to_string(guida->incastri->dim_y) + "\" ";
-    str += "style=\"fill:rgb(140,140,140);stroke-width:3;stroke:rgb(0,0,0)\" ";
+    str += guida_stilerettangolo( guida->incastri);
     str += str_trasf;
     str += " /> \n";
 
@@ -429,7 +442,7 @@ string guida_to_SVGstring( GuidaPrismatica * guida ){
     str += "y=\"" + to_string( - guida->guida->dim_y / 2  ) + "\" ";
     str += "width=\"" + to_string(guida->guida->dim_x) + "\" ";
     str += "height=\"" + to_string(guida->guida->dim_y) + "\" ";
-    str += "style=\"fill:rgb(140,140,140);stroke-width:3;stroke:rgb(0,0,0)\" ";
+    str += guida_stilerettangolo( guida->guida );
     str += str_trasf;
     str += " /> \n";
 
@@ -484,7 +497,7 @@ GuidaPrismatica * guida_carica_file( string nome_file ){
     infile >> guida->guida->dim_x >> guida->guida->dim_y >> guida->guida->colore[0] >> guida->guida->colore[1] >> guida->guida->colore[2];
 
     infile.close();
-    
+
     return guida;
 
 }
