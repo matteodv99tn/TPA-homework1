@@ -4,6 +4,10 @@
 
     #include <iostream>
 
+    #define DEF_RGB_R 130
+    #define DEF_RGB_G 130
+    #define DEF_RGB_B 130
+
     /*
      * Definizione della struttura dei rettangoli utilizzati per la guida prismatica
      * Struttura di supporto per la rappresentazione grafica del componente
@@ -16,6 +20,8 @@
         
         float dim_x;
         float dim_y;
+
+        unsigned int colore[3];
 
     };
 
@@ -82,6 +88,63 @@
      * Funzione che permette di visualizzare a schermo le informazioni sulla guida prismatica
      */    
     void guida_visualizza_info ( GuidaPrismatica * guida );
+    
+    /*
+     * Funzione che permette di impostare la lunghezza della guida prismatica
+     * 
+     * @param guida: struttura GuidaPrismatica da modificare
+     * @param l: lunghezza da associare alla struttura
+     * 
+     * @return 0: operazione effettuata correttamente
+     * @return 1: ingresso negativo, grandezza invariata
+     * 
+     */ 
+    int guida_set_lunghezza( GuidaPrismatica * guida , float l );
+
+    /*
+     * Funzione che permette di impostare la corsa di una guida prismatica effettuando dei controlli
+     * 
+     * @param guida: struttura GuidaPrismatica da modificare
+     * @param c: corsa da associare alla struttura
+     * 
+     * @return 0: operazione effettuata con successo
+     * @return 1: operazione effettuata con modifiche
+     * 
+     */ 
+    int guida_set_corsa( GuidaPrismatica * guida , float c );
+
+    /*
+     * Funzione che permette di impostare la corsa di una guida prismatica effettuando dei controlli
+     * 
+     * @param guida: struttura GuidaPrismatica da modificare
+     * @param dimx: dimensione orizzontale della cerniera
+     * @param dimy: dimensione verticale della cerniera
+     * @param col_R (opzionale): componente rossa del colore RGB (tra 0 e 255)
+     * @param col_G (opzionale): componente verde del colore RGB (tra 0 e 255)
+     * @param col_B (opzionale): componente blu del colore RGB (tra 0 e 255)
+     * 
+     * @return 0: operazione effettuata con successo
+     * @return 1: modifica non effettuata per dimensione negativa
+     * 
+     */ 
+    int guida_set_cerniera( GuidaPrismatica * guida , float dimx, float dimy, unsigned int col_R = DEF_RGB_R, unsigned int col_G = DEF_RGB_R , unsigned int col_B = DEF_RGB_B);
+
+    /*
+     * Funzione che permette di impostare le proprietà del rettangolo della guida prismatica
+     * 
+     * @param guida: struttura GuidaPrismatica da modificare
+     * @param dimx: dimensione orizzontale della guida
+     * @param dimy: dimensione verticale della guida
+     * @param col_R (opzionale): componente rossa del colore RGB (tra 0 e 255)
+     * @param col_G (opzionale): componente verde del colore RGB (tra 0 e 255)
+     * @param col_B (opzionale): componente blu del colore RGB (tra 0 e 255)
+     * 
+     * @return 0: operazione effettuata con successo
+     * @return 1: modifica non effettuata per dimensione negativa
+     * 
+     */ 
+    int guida_set_guida( GuidaPrismatica * guida , float dimx, float dimy, unsigned int col_R = DEF_RGB_R, unsigned int col_G = DEF_RGB_R , unsigned int col_B = DEF_RGB_B);
+
 
     /*
      * Funzione interattiva che da linea di comando permette di modificare dei parametri della guida prismatica
@@ -96,10 +159,11 @@
      * 
      * @param guida: guida prismatica della quale controllare l'integrità
      * 
-     * @errorcode 0: la guida prismatica è corretta
-     * @errorcode 1: lunghezza della guida negativa o nulla
-     * @errorcode 2: dimensioni delle cerniere invalide
-     * @errorcode 3; dimensioni della guida prismatica invalide
+     * @return -1: effettuate modifiche ma operazione svolta correttamente
+     * @return 0: la guida prismatica è corretta
+     * @return 1: lunghezza della guida negativa o nulla
+     * @return 2: dimensioni delle cerniere invalide
+     * @return 3; dimensioni della guida prismatica invalide
      * 
      * Correzioni effettuate automaticamente:
      *  > spostare la corsa al valore tollerato più plausibile alla realtà

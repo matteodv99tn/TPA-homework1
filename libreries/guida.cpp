@@ -20,6 +20,10 @@ GRect * grect_init( float dimx, float dimy ){
     rect->dim_x = dimx;
     rect->dim_y = dimy;
 
+    rect->colore[0] = DEF_RGB_R;
+    rect->colore[1] = DEF_RGB_G;
+    rect->colore[2] = DEF_RGB_B;
+
     // Ritorno l'oggetto istanziato
     return rect;
 
@@ -82,21 +86,160 @@ void guida_visualizza_info ( GuidaPrismatica * guida ){
 
 }
 
+int guida_set_lunghezza( GuidaPrismatica * guida , float l ){
+
+    if ( l > 0 ){
+        guida->lunghezza = l;
+        return 0;
+    } else  return 1;
+
+}
+
+int guida_set_corsa( GuidaPrismatica * guida , float c ){
+
+    guida->corsa = c;
+
+    if( guida_controlla_integrita(guida) == 0) return 0;
+    else return 1;
+
+}
+
+int guida_set_cerniera( GuidaPrismatica * guida , float dimx, float dimy, unsigned int col_R, unsigned int col_G, unsigned int col_B){
+
+    int exit_value = 0;
+
+    if(dimx < 0){
+        exit_value = 1;
+    } else {
+        guida->incastri->dim_x = dimx;
+    }
+
+    if(dimy < 0){
+        exit_value = 1;
+    } else {
+        guida->incastri->dim_y = dimy;
+    }
+
+    if( col_R > 255) col_R = 255;
+    if( col_G > 255) col_G = 255;
+    if( col_B > 255) col_B = 255;
+
+    guida->incastri->colore[0] = col_R;
+    guida->incastri->colore[1] = col_G;
+    guida->incastri->colore[2] = col_B;
+
+    return exit_value;
+}
+
+int guida_set_guida( GuidaPrismatica * guida , float dimx, float dimy, unsigned int col_R, unsigned int col_G, unsigned int col_B){
+
+    int exit_value = 0;
+
+    if(dimx < 0){
+        exit_value = 1;
+    } else {
+        guida->guida->dim_x = dimx;
+    }
+
+    if(dimy < 0){
+        exit_value = 1;
+    } else {
+        guida->guida->dim_y = dimy;
+    }
+
+    if( col_R > 255) col_R = 255;
+    if( col_G > 255) col_G = 255;
+    if( col_B > 255) col_B = 255;
+
+    guida->guida->colore[0] = col_R;
+    guida->guida->colore[1] = col_G;
+    guida->guida->colore[2] = col_B;
+
+    return exit_value;
+}
+
 // Funzione ausiliaria per la modifica della lunghezza
 void guida_modifica_lunghezza (GuidaPrismatica * guida ){
     float temp;
 
-    cout << "Inserire 0 per mantenere invariato il valore" << endl;
     cout << "Inserire un nuovo valore di lunghezza (attuale: " << guida->lunghezza << "): ";
     cin >> temp;
     
-    if(temp > 0 ){
-        guida->lunghezza = temp;
+    if ( guida_set_lunghezza(guida, temp) == 1 ){
+        cout << "Valore in ingresso negativo o nullo; lunghezza non modificata!";
     }
 
     cout << "Inserire un nuovo valore di corsa (attuale: " << guida->corsa << "): ";
     cin >> temp;
-    guida->corsa = temp;
+    guida_set_corsa(guida, temp);
+}
+
+// Funzione ausiliaria per la modifica delle proprietà della cerniera
+void guida_modifica_cerniere ( GuidaPrismatica * guida ){
+
+    float x, y;
+    char scelta;
+
+    cout << "Dimensione orizzontale della cerniera (attuale: " << guida->incastri->dim_x << "): ";
+    cin >> x;
+    cout << "Dimensione verticale della cerniera (attuale: " << guida->incastri->dim_y << "): ";
+    cin >> y;
+
+    cout << "Modificare i colori? [s/n]";
+    do{
+        cin >> scelta;
+    } while (scelta != 's' && scelta != 'n');
+
+    if (scelta == 's'){
+        unsigned int col[3];
+
+        cout << "Colore espresso in formato RGB con valori compresi tra 0 e 1:" << endl;
+        cout << " > Componente rossa (attuale " << guida->incastri->colore[0] << "): ";
+        cin >> col[0];
+        cout << " > Componente rossa (attuale " << guida->incastri->colore[1] << "): ";
+        cin >> col[1];
+        cout << " > Componente rossa (attuale " << guida->incastri->colore[2] << "): ";
+        cin >> col[2];
+        
+        guida_set_cerniera(guida, x, y, col[1], col[2], col[3]);
+    } else {
+        guida_set_cerniera(guida, x, y);
+    }
+
+}
+
+// Funzione ausiliaria per la modifica delle proprietà della guida
+void guida_modifica_guida ( GuidaPrismatica * guida ){
+
+    float x, y;
+    char scelta;
+
+    cout << "Dimensione orizzontale della guida (attuale: " << guida->guida->dim_x << "): ";
+    cin >> x;
+    cout << "Dimensione verticale della guida (attuale: " << guida->guida->dim_y << "): ";
+    cin >> y;
+
+    cout << "Modificare i colori? [s/n]";
+    do{
+        cin >> scelta;
+    } while (scelta != 's' || scelta != 'n');
+
+    if (scelta == 's'){
+        unsigned int col[3];
+
+        cout << "Colore espresso in formato RGB con valori compresi tra 0 e 1:" << endl;
+        cout << " > Componente rossa (attuale " << guida->guida->colore[0] << "): ";
+        cin >> col[0];
+        cout << " > Componente rossa (attuale " << guida->guida->colore[1] << "): ";
+        cin >> col[1];
+        cout << " > Componente rossa (attuale " << guida->guida->colore[2] << "): ";
+        cin >> col[2];
+        
+        guida_set_guida(guida, x, y, col[1], col[2], col[3]);
+    } else {
+        guida_set_guida(guida, x, y);
+    }
+
 }
 
 void guida_modifica( GuidaPrismatica * guida){
@@ -107,6 +250,8 @@ void guida_modifica( GuidaPrismatica * guida){
 
         cout << endl << "Operazioni che è possibile effettuare:" << endl;
         cout << " 1. modificare la lunghezza e la corsa del sistema" << endl;
+        cout << " 2. modificare le proprietà delle cerniere" << endl;
+        cout << " 3. modificare le proprietà della guida" << endl;
         cout << " 0. per uscire dal menu di modifica" << endl;
         cout << "Scelta effettuata: ";
         cin >> scelta;
@@ -117,6 +262,14 @@ void guida_modifica( GuidaPrismatica * guida){
                 guida_modifica_lunghezza( guida );
                 break;
 
+            case 2:
+                guida_modifica_cerniere( guida );
+                break;
+
+            case 3:
+                guida_modifica_guida( guida );
+                break;
+                
             default:
                 if( scelta != 0 )
                     cout << "Ingresso non valido!" << endl;
@@ -130,6 +283,8 @@ void guida_modifica( GuidaPrismatica * guida){
 }
 
 int guida_controlla_integrita (GuidaPrismatica * guida ){
+
+    bool guida_modificata = false;
 
     // Controllo che la lunghezza della guida prismatica sia un valore positivo
     if(guida->lunghezza <= 0) {
@@ -162,31 +317,49 @@ int guida_controlla_integrita (GuidaPrismatica * guida ){
     // Se la corsa è negativa o nulla la pongo ad un terzo della lunghezza verticale minima delle cerniere
     int spess_min = min( guida->incastri->dim_y, guida->guida->dim_y );
     
-    if(guida->spessore > spess_min)
+    if(guida->spessore > spess_min){
+
         guida->spessore = spess_min;
+        guida_modificata = true;
+
+    }
     
-    if(guida->spessore <= 0)
+    if(guida->spessore <= 0){
+
         guida->spessore = spess_min / 3;
+        guida_modificata = true;
+
+    }
 
     // Controllo la posizione della corsa che deve essere entro un range prefissato
     float min_corsa = guida->incastri->dim_x / 2 + guida->guida->dim_x/2;
     float max_corsa = guida->lunghezza - guida->incastri->dim_x / 2 - guida->guida->dim_x/2;
     
-    if(guida->corsa > max_corsa) 
-        guida->corsa = max_corsa;
+    if(guida->corsa > max_corsa) {
 
-    if(guida->corsa < min_corsa) 
+        guida->corsa = max_corsa;
+        guida_modificata = true;
+
+    }
+
+    if(guida->corsa < min_corsa) {
+
         guida->corsa = min_corsa;
+        guida_modificata = true;
+
+    }
 
     // Controllo che le dimensioni delle cerniere e della guida non superi la lunghezza complessiva della struttura; in caso riaggiusto
     if( guida->incastri->dim_x + guida->guida->dim_x > guida->lunghezza){
 
         guida->incastri->dim_x = guida->lunghezza / 2;
         guida->guida->dim_x = guida->lunghezza / 2;
+        guida_modificata = true;
 
     }
 
-    return 0;
+    if ( guida_modificata ) return -1;
+    else return 0;
 }
 
 // Funzione che genera la corretta matrice di roto-traslazione della guida pristmatica
