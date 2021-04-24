@@ -193,12 +193,12 @@ void guida_modifica_cerniere ( GuidaPrismatica * guida ){
     if (scelta == 's'){
         unsigned int col[3];
 
-        cout << "Colore espresso in formato RGB con valori compresi tra 0 e 1:" << endl;
+        cout << "Colore espresso in formato RGB con valori compresi tra 0 e 255:" << endl;
         cout << " > Componente rossa (attuale " << guida->incastri->colore[0] << "): ";
         cin >> col[0];
-        cout << " > Componente rossa (attuale " << guida->incastri->colore[1] << "): ";
+        cout << " > Componente verde (attuale " << guida->incastri->colore[1] << "): ";
         cin >> col[1];
-        cout << " > Componente rossa (attuale " << guida->incastri->colore[2] << "): ";
+        cout << " > Componente blu (attuale " << guida->incastri->colore[2] << "): ";
         cin >> col[2];
         
         guida_set_cerniera(guida, x, y, col[1], col[2], col[3]);
@@ -227,12 +227,12 @@ void guida_modifica_guida ( GuidaPrismatica * guida ){
     if (scelta == 's'){
         unsigned int col[3];
 
-        cout << "Colore espresso in formato RGB con valori compresi tra 0 e 1:" << endl;
+        cout << "Colore espresso in formato RGB con valori compresi tra 0 e 255:" << endl;
         cout << " > Componente rossa (attuale " << guida->guida->colore[0] << "): ";
         cin >> col[0];
-        cout << " > Componente rossa (attuale " << guida->guida->colore[1] << "): ";
+        cout << " > Componente verde (attuale " << guida->guida->colore[1] << "): ";
         cin >> col[1];
-        cout << " > Componente rossa (attuale " << guida->guida->colore[2] << "): ";
+        cout << " > Componente blu (attuale " << guida->guida->colore[2] << "): ";
         cin >> col[2];
         
         guida_set_guida(guida, x, y, col[1], col[2], col[3]);
