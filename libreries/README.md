@@ -1,16 +1,35 @@
-# Descrizione della libreria
+# Documentazione
 
-L'idea di funzionamento della libreria per la rappresentazione grafica di una coppia prismatica è quella di rendere il più pratico possibile l'inserzione del disegno in qualsiasi programma; l'inizializzazione infatti prevede l'input di pochi elementi che potranno essere modificati in un secondo momento per avere un disegno più flessibile ma poco complicato da apprendere.
+Verranno qui riportate tutte le funzioni implementate nella libreria e fruibili dall'utente con una descrizione sia dei parametri in ingresso che dei valori restituiti.
 
-Le funzioni implementate permetteranno di correggere automaticamente ingressi in input non attendibili rispetto alla realizzazione grafica del dispositivo.
+## Struttura dati
 
-# Funzioni implementate e documentazione
+La struttura dati denominata `GuidaPrismatica` contiene le informazioni riguardanti:
+- la `lunghezza` della guida prismatica; essa rappresenta la distanza tra i due centri delle cerniere che compongono il sistema;
+- la `corsa` della guida, ossia la distanza rispetto alla cerniera a sinista del centro della guida prismatica che di fatto può scorrere sul cilindro di scorrimento;
+- la posizione orizzontale `pos_x` e verticale `pos_y` dell centro della guida prismatica rispetto al piando di rappresentazione vettoriale;
+- lo `spessore` del cilindro di scorrimento collegante le due cerniere sul quale scorre la guida;
+- l'inclinazione `alpha` della guida rispetto all'orizzontale.
+
+Le informazioni sulle cerniere (nella struttura denominate `incastri`) e sulla `guida` del sistema sono contenute in un'altra strtutura dati che contiene:
+- le dimensioni orizzontale `dim_x` e verticale `dim_y` del rettangolo associato;
+- un vettore di 3 dimensioni `colore` che contiene le informazioni sulla terna di valori RGB che caratterizzano la colorazione delle cerniere o della guida.
+
+## Inizializzazione, salvataggio, caricamento e distruzione
 ### `guida_init`
-Funzione che permette di inizializzare la struttura per il rendering della guida prismatica; come output restituisce un puntatore all'oggetto creato del tipo `guida prismatica`. I parametri della funzione sono:
-- `lunghezza` : lunghezza complessiva della sbarra rispetto alla quale la guida prismatica si può muovere
-- `corsa` : posizione della guida rispetto all'origine (sinistra) dell'asta di supporto
-- `dimx` : dimensione orizzontale delle cerniere a telaio e del glifo del meccanismo
-- `dimy` : dimensione verticale delle cerniere a telaio e del glifo del meccanismo
+Funzione che permette di inizializzare una struttura dati di tipo `GuidaPrismatica` ritornando un puntatore alla stessa; come parametri in ingresso è necessario inserire i parametri:
+- `lunghezza` : lunghezza del sistema da generare
+- `corsa` : posizione della guida rispetto alla cerniera a sinsitra
+- `dimx` : dimensione orizzontale delle cerniere e del telaio del sistema
+- `dimy` : dimensione verticale delle cerniere e del telaio del sistema
+
+Lo spessore del cilindro scorrimento è posto ad 1/3 del valore `dimy`; l'inclinazione `alpha` della guida è nulla e il colore sia per la guida che per le cerniere è associata alla terna (130,130,130).
+
+### `guida_crea`
+Funzione che restituisce un puntatore ad una struttura `GuidaPrismatica` che viene generata tramite un'interazione via linea di comando con l'utente
+
+### `guida_salva_file`
+Funzione che permette di salvare le informazioni 
 
 ### `guida_distruggi`
-Funzione che permette di _distuggere_ correttamente un puntatore ad una struct `guida prismatica`; non restituisce alcun output.
+Funzione che permette di _distuggere_ correttamente un puntatore ad una struct `GuidaPrismatica`; non restituisce alcun output.
