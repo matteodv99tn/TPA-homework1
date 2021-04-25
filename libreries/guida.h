@@ -83,7 +83,7 @@
      * 
      */
     GuidaPrismatica * guida_crea();
-    
+
     /*
      * Funzione che permette di deallocare correttamente l'istanza di una guida prismatica creata
      */
@@ -105,6 +105,15 @@
      * 
      */ 
     int guida_set_lunghezza( GuidaPrismatica * guida , float l );
+
+    /* 
+     * Funzione che permette di impostare lo spessore della guida prismatica
+     * 
+     * @param guida: guida della quale modificare lo spessore
+     * @param spess: nuovo spessore da inserire
+     * 
+     */
+    void guida_set_spessore( GuidaPrismatica * guida, float spess);
 
     /*
      * Funzione che permette di impostare la corsa di una guida prismatica effettuando dei controlli

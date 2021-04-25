@@ -140,6 +140,18 @@ int guida_set_lunghezza( GuidaPrismatica * guida , float l ){
 
 }
 
+void guida_set_spessore( GuidaPrismatica * guida, float spess){
+
+    if(spess>0){
+
+        guida->spessore = spess;
+        guida_controlla_integrita(guida);
+
+    }
+
+    return;
+}
+
 int guida_set_corsa( GuidaPrismatica * guida , float c ){
 
     guida->corsa = c;
