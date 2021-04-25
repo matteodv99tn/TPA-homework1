@@ -11,21 +11,11 @@ Un esempio di prima guida prismatica ottenuta da un'inizializzazione semplice pu
 
 La libreria è pensata per facilitare l'implementazione della guida prismatica nei rendering cercando di aggiustare automaticamente parametri in ingresso potenzialmente scorretti sia dal punto di vista logico (dimensioni negative), sia dal punto di vista geometrico (per esempio la guida non potrà mai sovrapporsi alle cerniere, e dunque valori del parametro di corsa che porterebbero a queste situazioni verrebbe opportunamente corretto).
 
-## Roadmap del progetto
+E' possibile trovare una descrizione di tutte le funzioni accessibili e il loro funzionamento (con parametri in ingresso e valori in uscita) nella [**documentazione**](libreries/README.md) rilasciata.
 
-v0.0.0 prime sperimentazioni e studio delle strutture \[in corso\]
+## _Minimal Working Example_
+Ai fini di capire velocemente il funzionamento della libreria e apprendere ad eseguire le operazioni base in maniera corretta è fornito un [_minimal working example_](mwe.cpp) (in segui mwe).
 
+Nel documento viene mostrato come realizzare la guida prismatica mostrata in testa al documento e come, tramite la modifica delle proprietà  dello stesso cilindro, ottenere il seguente risultato:
 
-v1.0.0 struttura definita; implementazione delle funzioni di inizializzazione del software \
-v1.1.0 integrazione di un sistema di verifica degli input \
-v1.2.0 integrazione di una prima modalità di rendering del dispositivo \
-v1.3.0 implementazione delle funzioni di salvataggio e caricamento
-
-La roadmap deve essere intesa come un cronoprogramma da seguire per la fase di sviluppo e il versionamento del programma, ma può subire variazioni; per dettagli più specifici osservare le note di rilascio.
-
-
-## Note di rilascio
-### V1.0.0
-- Creata la struttura `GuidaPrismatica` che contiene i dati per il rendering della figura
-- Aggiunta la funzione `guida_init` per l'inizializzazione dell'oggetto contenente le informazioni per il rendering
-- Aggiunta la funzione `guida_distruggi` per la rimozione dell'oggetto istanziato
+![](mwe_result2.svg)
