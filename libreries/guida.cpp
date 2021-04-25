@@ -11,6 +11,21 @@
 
 using namespace std;
 
+// Funzione ausiliaria per implementare i menu di scelta:
+char scelta(char scelta_1, char scelta_2){
+
+    char in;
+
+    cout << " [" << scelta_1 << "/" << scelta_2 << "] ";
+
+    do{
+        cin >> in;
+    } while (in != scelta_1 && in != scelta_2);
+
+    return in;
+
+}
+
 GRect * grect_init( float dimx, float dimy ){
 
     // Creo l'istanza del rettangolo
@@ -47,7 +62,7 @@ GuidaPrismatica* guida_init ( float posx, float posy, float lungh, float corsa, 
     guida->spessore = dimy / 3;
     guida->alpha = 0;
 
-    if ( guida_controlla_integrita( guida ) != 0) {
+    if ( guida_controlla_integrita( guida ) > 0) {
 
         guida_distruggi(guida);
         return NULL;
@@ -57,6 +72,36 @@ GuidaPrismatica* guida_init ( float posx, float posy, float lungh, float corsa, 
     // Ritorno l'oggetto della guida inizializzata
     return guida;
 
+}
+
+GuidaPrismatica * guida_crea(){
+
+    GuidaPrismatica * guida_creata;
+
+    float posx, posy, l, c, dimx, dimy;
+
+    cout << "Specificare le 2 coordinate (x,y) della posizione centrale della guida prismatica: ";
+    cin >> posx >> posy;
+
+    cout << "Specificare la lunghezza della guida prismatica: ";
+    cin >> l;
+    cout << "Spceficiare il valore della corsa della guida prismatica: ";
+    cin >> c;
+
+    cout << "Specificare la dimensione orizzontale e verticale delle cerniere e della guida: ";
+    cin >> dimx >> dimy;
+    
+    guida_creata = guida_init(posx, posy, l, c, dimx, dimy);
+
+    if( guida_creata == NULL ) {
+        cout << "Errore nei parametri! Non sono riuscito a creare una struttura consistente, riprovare." << endl << endl;
+    } else {
+        cout << "Continuare con la modifica per cambiare ulteriori proprietà?";
+        
+        if( scelta('s','n') == 's') guida_modifica( guida_creata );
+    }
+
+    return guida_creata;
 }
 
 void guida_distruggi ( GuidaPrismatica * guida ){
@@ -248,7 +293,7 @@ void guida_modifica( GuidaPrismatica * guida){
 
     do{
 
-        cout << endl << "Operazioni che è possibile effettuare:" << endl;
+        cout << endl << endl << "Operazioni che è possibile effettuare:" << endl;
         cout << " 1. modificare la lunghezza e la corsa del sistema" << endl;
         cout << " 2. modificare le proprietà delle cerniere" << endl;
         cout << " 3. modificare le proprietà della guida" << endl;
@@ -278,6 +323,8 @@ void guida_modifica( GuidaPrismatica * guida){
 
 
     } while( scelta  != 0 );
+
+    guida_controlla_integrita( guida );
 
     return;
 }
@@ -312,6 +359,15 @@ int guida_controlla_integrita (GuidaPrismatica * guida ){
 
     }
 
+    // Controllo che le dimensioni delle cerniere e della guida non superi la lunghezza complessiva della struttura; in caso riaggiusto
+    if( guida->incastri->dim_x + guida->guida->dim_x > guida->lunghezza){
+
+        guida->incastri->dim_x = guida->lunghezza / 2;
+        guida->guida->dim_x = guida->lunghezza / 2;
+        guida_modificata = true;
+
+    }   
+
     // Aggiusto lo spessore del cilindro di scorrimento
     // Se lo spessore è maggiore della lunghezza delle cerniere allora la riduco al valore minimo trovato
     // Se la corsa è negativa o nulla la pongo ad un terzo della lunghezza verticale minima delle cerniere
@@ -345,15 +401,6 @@ int guida_controlla_integrita (GuidaPrismatica * guida ){
     if(guida->corsa < min_corsa) {
 
         guida->corsa = min_corsa;
-        guida_modificata = true;
-
-    }
-
-    // Controllo che le dimensioni delle cerniere e della guida non superi la lunghezza complessiva della struttura; in caso riaggiusto
-    if( guida->incastri->dim_x + guida->guida->dim_x > guida->lunghezza){
-
-        guida->incastri->dim_x = guida->lunghezza / 2;
-        guida->guida->dim_x = guida->lunghezza / 2;
         guida_modificata = true;
 
     }

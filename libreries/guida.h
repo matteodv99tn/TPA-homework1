@@ -77,6 +77,14 @@
     GuidaPrismatica * guida_init ( float posx, float posy, float lungh, float corsa, float dimx, float dimy);
 
     /*
+     * Funzione che permette di creare da terminale una guida prismatica
+     * 
+     * @return guida prismatica risultante dall'operazione
+     * 
+     */
+    GuidaPrismatica * guida_crea();
+    
+    /*
      * Funzione che permette di deallocare correttamente l'istanza di una guida prismatica creata
      */
     void guida_distruggi ( GuidaPrismatica * guida );
