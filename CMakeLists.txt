@@ -13,6 +13,13 @@ target_include_directories(mainEntry PRIVATE libraries)
 target_sources(mainEntry PRIVATE libreries/guida.cpp)
 target_link_libraries(mainEntry)
 
+# EXECUTABLE SECTION
+add_executable(mwe mwe.cpp)
+target_include_directories(mwe PRIVATE libraries)
+# Class A is not a library: its source file needs to be included in the target sources
+target_sources(mwe PRIVATE libreries/guida.cpp)
+target_link_libraries(mwe)
+
 # TESTS SECTION
 # Basically makes CMake read the CMakeLists.txt file contained in tests
 # add_subdirectory(tests)
