@@ -18,7 +18,9 @@ int main() {
     guida_visualizza_info( myguida );
 
     cout << endl << "Salvo nel file \"mwe_result1.SVG\" la rappresentazione grafica della guida prismatica." << endl;
-    guida_to_SVG ( myguida, "../mwe_result1"); 
+    guida_to_SVG ( myguida, "../output/mwe_result1"); 
+    cout << endl << "Nel file \"mwe_result1b.SVG\" eseguo la rappresentazione della stessa guida con le dimensioni indicate." << endl;
+    guida_to_SVG ( myguida, "../output/mwe_result1b", true); 
 
     cout << endl << "Modifico le dimensioni della cerniera a valore 40x70 con coordinate RGB (0,200,0), ossia colore verde." << endl;
     guida_set_cerniera( myguida, 40, 70, 0, 200, 0);
@@ -33,7 +35,7 @@ int main() {
     guida_visualizza_info( myguida );
     
     cout << endl << "Salvo la versione modificata nel file \"mwe_result2.svg\"." << endl;
-    guida_to_SVG ( myguida, "../mwe_result2");
+    guida_to_SVG ( myguida, "../output/mwe_result2");
 
     cout << endl << "Terminato il programma è necessario distruggere correttamente la struttura istanziata tramite l'apposita funzione." << endl << endl;
     guida_distruggi( myguida );
