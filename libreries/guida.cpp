@@ -493,10 +493,11 @@ string guida_linee_annotazione( float x1, float y1, float x2, float y2, string s
 
     if(x1 == x2){
 
-        str += "\t<text x=\"" + to_string( (x1 + x2) / 2 ) + "\" y=\"" + to_string(y1 - 6) + "\" ";
-        str += "dominant-baseline=\"middle\" text-anchor=\"middle\" class=\"stileannotazioni\" ";
+        str += "\t<text x=\"" + to_string( x1 + 3 ) + "\" y=\"" + to_string( (y1 + y2) / 2 ) + "\" ";
+        str += "dominant-baseline=\"middle\" class=\"stileannotazioni\" ";
         str += str_trasformazione;
         str += " >" + str_annotazione + "</text>\n";
+
     } else {
 
         str += "\t<text x=\"" + to_string( (x1 + x2) / 2 ) + "\" y=\"" + to_string(y1 - 6) + "\" ";
@@ -529,7 +530,7 @@ string guida_linee_annotazione( float x1, float y1, float x2, float y2, string s
         str += str_trasformazione;
         str += "/>\n";
 
-        str += "\t\t <line x1=\"" + to_string(x2 - SBALZO_ANNOTAZIONI) + "\" y1=\"" + to_string(y1) + "\" x2=\"" + to_string(x2 + SBALZO_ANNOTAZIONI) + "\" y2=\"" + to_string(y1) + "\" ";
+        str += "\t\t <line x1=\"" + to_string(x2 - SBALZO_ANNOTAZIONI) + "\" y1=\"" + to_string(y2) + "\" x2=\"" + to_string(x2 + SBALZO_ANNOTAZIONI) + "\" y2=\"" + to_string(y2) + "\" ";
         str += "style=\"stroke:rgb(0,0,0);stroke-width:" + to_string(SPESSORE_ANNOTAZIONI) + "\" ";
         str += str_trasformazione;
         str += "/>\n";
@@ -537,6 +538,15 @@ string guida_linee_annotazione( float x1, float y1, float x2, float y2, string s
     }
 
     return str;
+}
+
+string to_string_2dp( const float number ){
+
+    std::ostringstream out;
+    out.precision(2);
+    out << std::fixed << number;
+
+    return out.str();
 }
 
 string guida_to_SVGstring( GuidaPrismatica * guida, bool visualizza_dimensioni ){
@@ -599,7 +609,7 @@ string guida_to_SVGstring( GuidaPrismatica * guida, bool visualizza_dimensioni )
                 -guida->lunghezza / 2 + guida->incastri->dim_x / 2, 
                 -guida->incastri->dim_y / 2 - 10,
                 str_trasf,
-                to_string( guida->incastri->dim_x )
+                to_string_2dp( guida->incastri->dim_x )
             );
         str += guida_linee_annotazione( 
                 guida->lunghezza / 2 - guida->incastri->dim_x / 2,
@@ -607,7 +617,7 @@ string guida_to_SVGstring( GuidaPrismatica * guida, bool visualizza_dimensioni )
                 guida->lunghezza / 2 + guida->incastri->dim_x / 2, 
                 -guida->incastri->dim_y / 2 - 10,
                 str_trasf,
-                to_string( guida->guida->dim_x )
+                to_string_2dp( guida->guida->dim_x )
             );
 
         // Dimensione orizzontale della guida
@@ -617,7 +627,7 @@ string guida_to_SVGstring( GuidaPrismatica * guida, bool visualizza_dimensioni )
                 -guida->lunghezza / 2 + guida->corsa + guida->guida->dim_x / 2, 
                 -guida->guida->dim_y / 2 - 10,
                 str_trasf,
-                to_string( guida->incastri->dim_x )
+                to_string_2dp( guida->incastri->dim_x )
             );
 
         // Lunghezze e corsa del disegno
@@ -627,7 +637,7 @@ string guida_to_SVGstring( GuidaPrismatica * guida, bool visualizza_dimensioni )
                 guida->lunghezza / 2, 
                 guida->guida->dim_y / 2 + 35,
                 str_trasf,
-                to_string( guida->lunghezza )
+                to_string_2dp( guida->lunghezza )
             );
         str += guida_linee_annotazione( 
                 -guida->lunghezza / 2,
@@ -635,9 +645,49 @@ string guida_to_SVGstring( GuidaPrismatica * guida, bool visualizza_dimensioni )
                 -guida->lunghezza / 2 + guida->corsa, 
                 guida->guida->dim_y / 2 + 15,
                 str_trasf,
-                to_string( guida->corsa ) 
+                to_string_2dp( guida->corsa ) 
             );
-        
+
+        // Altezza del cilindro di scorrimento
+        str += guida_linee_annotazione(
+                guida->lunghezza / 2 + guida->incastri->dim_x / 2 + 10,
+                -guida->spessore / 2,
+                guida->lunghezza / 2 + guida->incastri->dim_x / 2 + 10,
+                guida->spessore / 2,
+                str_trasf,
+                to_string_2dp( guida->spessore )
+        );
+        // Altezza della cerniera
+        str += guida_linee_annotazione(
+                guida->lunghezza / 2 + guida->incastri->dim_x / 2 + 60,
+                -guida->incastri->dim_y / 2,
+                guida->lunghezza / 2 + guida->incastri->dim_x / 2 + 60,
+                guida->incastri->dim_y / 2,
+                str_trasf,
+                to_string_2dp( guida->incastri->dim_y )
+        );
+
+        if(guida->lunghezza - guida->corsa > 80){
+
+            str += guida_linee_annotazione(
+                - guida->lunghezza / 2 + guida->corsa + guida->guida->dim_x / 2 + SBALZO_ANNOTAZIONI + 5 ,
+                - guida->guida->dim_y / 2,
+                - guida->lunghezza / 2 + guida->corsa + guida->guida->dim_x / 2 + SBALZO_ANNOTAZIONI + 5 ,
+                guida->guida->dim_y / 2,
+                str_trasf,
+                to_string_2dp(guida->guida->dim_y)
+            );
+        } else {
+
+            str += guida_linee_annotazione(
+                - guida->lunghezza / 2 + guida->corsa - guida->guida->dim_x / 2 - SBALZO_ANNOTAZIONI - 40 ,
+                - guida->guida->dim_y / 2,
+                - guida->lunghezza / 2 + guida->corsa - guida->guida->dim_x / 2 - SBALZO_ANNOTAZIONI - 40 ,
+                guida->guida->dim_y / 2,
+                str_trasf,
+                to_string_2dp(guida->guida->dim_y)
+            );
+        }
     }
 
     return str;
