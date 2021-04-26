@@ -149,13 +149,14 @@ void guida_modifica( GuidaPrismatica * guida){\
 
     do{
 
-        cout << endl << "Operazioni che è possibile effettuare:" << endl;
+        cout << endl << endl << "Operazioni che è possibile effettuare:" << endl;
         cout << " 1. modificare la lunghezza e la corsa del sistema" << endl;
         cout << " 2. modificare le proprietà delle cerniere del componente" << endl;
         cout << " 3. modificare le proprietà della guida del componente" << endl;
         cout << " 0. per uscire dal menu di modifica" << endl;
         cout << "Scelta effettuata: ";
         cin >> scelta;
+        cout << endl;
 
         switch( scelta ){
 
