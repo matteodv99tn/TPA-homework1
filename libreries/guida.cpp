@@ -302,7 +302,29 @@ void guida_modifica_guida ( GuidaPrismatica * guida ){
 
 }
 
-void guida_modifica( GuidaPrismatica * guida){
+// Funzione ausiliaria per modificare le proprietà delle cerniere
+void guida_modifica_cerniera (GuidaPrismatica * guida){
+
+    float temp;
+
+    cout << "Inserire 0 per mantenere invariato il valore" << endl;
+    
+    cout << "Inserire la dimensione orizzontale della cerniera (attuale: " << guida->incastri->dim_x << "): ";
+    do {
+        cin >> temp;
+    } while (temp < 0);
+    
+    if(temp != 0) guida->incastri->dim_x = temp;
+    
+    cout << "Inserire la dimensione verticale della cerniera (attuale: " << guida->incastri->dim_y << "): ";
+    do {
+        cin >> temp;
+    } while (temp < 0);
+    
+    if(temp != 0) guida->incastri->dim_y = temp;
+}
+
+void guida_modifica( GuidaPrismatica * guida){\
 
     int scelta = 0;
 
@@ -315,19 +337,23 @@ void guida_modifica( GuidaPrismatica * guida){
         cout << " 0. per uscire dal menu di modifica" << endl;
         cout << "Scelta effettuata: ";
         cin >> scelta;
+        cout << endl;
 
         switch( scelta ){
 
             case 1:
                 guida_modifica_lunghezza( guida );
+                guida_controlla_integrita( guida );
                 break;
 
             case 2:
-                guida_modifica_cerniere( guida );
+                guida_modifica_cerniera( guida );
+                guida_controlla_integrita( guida );
                 break;
 
-            case 3:
+            case 3: 
                 guida_modifica_guida( guida );
+                guida_controlla_integrita;
                 break;
                 
             default:
@@ -566,7 +592,52 @@ string guida_to_SVGstring( GuidaPrismatica * guida, bool visualizza_dimensioni )
         // Imposto lo stile del testo
         str += "\n\t<style> .stileannotazioni { font: italic 13px sans-serif; } </style>\n\n";
 
-        str += guida_linee_annotazione( -30, 40, 50, 40, str_trasf, "ti amo");
+        // Dimensione orizzontale della cerniera// Dimensione orizzontale della cerniera
+        str += guida_linee_annotazione( 
+                -guida->lunghezza / 2 - guida->incastri->dim_x / 2,
+                -guida->incastri->dim_y / 2 - 10,
+                -guida->lunghezza / 2 + guida->incastri->dim_x / 2, 
+                -guida->incastri->dim_y / 2 - 10,
+                str_trasf,
+                to_string( guida->incastri->dim_x )
+            );
+        str += guida_linee_annotazione( 
+                guida->lunghezza / 2 - guida->incastri->dim_x / 2,
+                -guida->incastri->dim_y / 2 - 10,
+                guida->lunghezza / 2 + guida->incastri->dim_x / 2, 
+                -guida->incastri->dim_y / 2 - 10,
+                str_trasf,
+                to_string( guida->guida->dim_x )
+            );
+
+        // Dimensione orizzontale della guida
+        str += guida_linee_annotazione( 
+                -guida->lunghezza / 2 + guida->corsa - guida->guida->dim_x / 2,
+                -guida->guida->dim_y / 2 - 10,
+                -guida->lunghezza / 2 + guida->corsa + guida->guida->dim_x / 2, 
+                -guida->guida->dim_y / 2 - 10,
+                str_trasf,
+                to_string( guida->incastri->dim_x )
+            );
+
+        // Lunghezze e corsa del disegno
+        str += guida_linee_annotazione( 
+                -guida->lunghezza / 2,
+                guida->guida->dim_y / 2 + 35,
+                guida->lunghezza / 2, 
+                guida->guida->dim_y / 2 + 35,
+                str_trasf,
+                to_string( guida->lunghezza )
+            );
+        str += guida_linee_annotazione( 
+                -guida->lunghezza / 2,
+                guida->guida->dim_y / 2 + 15,
+                -guida->lunghezza / 2 + guida->corsa, 
+                guida->guida->dim_y / 2 + 15,
+                str_trasf,
+                to_string( guida->corsa ) 
+            );
+        
     }
 
     return str;
