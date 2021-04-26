@@ -7,9 +7,9 @@ int main() {
 
     GuidaPrismatica * myguida;
 
-    myguida = guida_init(400,400,500, 150, 50, 70);
+    myguida = guida_carica_file("myguida");
 
-    guida_to_SVG(myguida, "../test");
+    guida_to_SVG(myguida, "test", true);
 
     guida_distruggi( myguida );
     return EXIT_SUCCESS;
