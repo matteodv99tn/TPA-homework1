@@ -5,7 +5,7 @@ Lo scopo del progetto è quello di creare una guida prismatica che può scorrere
 L'idea è di rendere facile la codifica con un'inizializzazione che prevede un numero minimo di parametri, tuttavia la libreria permette una modifica più avanzata sia tramite funzioni apposite, sia tramite menù interattivi da linea di comando.
 
 Un esempio di prima guida prismatica ottenuta da un'inizializzazione semplice può essere osservata come segue (il rendering è ottenuto e commentato nel [_minimal working example_](mwe.cpp))
-![](mwe_result1.svg)
+![](output/mwe_result1b.svg)
 
 ## Feature della libreria
 
@@ -18,4 +18,4 @@ Ai fini di capire velocemente il funzionamento della libreria e apprendere ad es
 
 Nel documento viene mostrato come realizzare la guida prismatica mostrata in testa al documento e come, tramite la modifica delle proprietà  dello stesso cilindro, ottenere il seguente risultato:
 
-![](mwe_result2.svg)
+![](output/mwe_result2.svg)
