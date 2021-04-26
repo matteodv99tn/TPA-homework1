@@ -11,6 +11,9 @@
 
 using namespace std;
 
+#define SPESSORE_ANNOTAZIONI 2
+#define SBALZO_ANNOTAZIONI 5
+
 // Funzione ausiliaria per implementare i menu di scelta:
 char scelta(char scelta_1, char scelta_2){
 
@@ -457,7 +460,60 @@ string guida_stilerettangolo ( GRect * rett ){
     return str;
 }
 
-string guida_to_SVGstring( GuidaPrismatica * guida ){
+// Funzione ausiliaria per disegnare una linea per rappresentare le dimensioni
+string guida_linee_annotazione( float x1, float y1, float x2, float y2, string str_trasformazione, string str_annotazione){
+    
+    string str;
+
+    if(x1 == x2){
+
+        str += "\t<text x=\"" + to_string( (x1 + x2) / 2 ) + "\" y=\"" + to_string(y1 - 6) + "\" ";
+        str += "dominant-baseline=\"middle\" text-anchor=\"middle\" class=\"stileannotazioni\" ";
+        str += str_trasformazione;
+        str += " >" + str_annotazione + "</text>\n";
+    } else {
+
+        str += "\t<text x=\"" + to_string( (x1 + x2) / 2 ) + "\" y=\"" + to_string(y1 - 6) + "\" ";
+        str += "dominant-baseline=\"middle\" text-anchor=\"middle\" class=\"stileannotazioni\" ";
+        str += str_trasformazione;
+        str += " >" + str_annotazione + "</text>\n";
+    }
+
+    str += "\t\t <line x1=\"" + to_string(x1) + "\" y1=\"" + to_string(y1) + "\" x2=\"" + to_string(x2) + "\" y2=\"" + to_string(y2) + "\" ";
+    str += "style=\"stroke:rgb(0,0,0);stroke-width:" + to_string(SPESSORE_ANNOTAZIONI) + "\" ";
+    str += str_trasformazione;
+    str += "/>\n";
+    
+    if (x1 != x2){
+
+        str += "\t\t <line x1=\"" + to_string(x1) + "\" y1=\"" + to_string(y1 - SBALZO_ANNOTAZIONI) + "\" x2=\"" + to_string(x1) + "\" y2=\"" + to_string(y1 + SBALZO_ANNOTAZIONI) + "\" ";
+        str += "style=\"stroke:rgb(0,0,0);stroke-width:" + to_string(SPESSORE_ANNOTAZIONI) + "\" ";
+        str += str_trasformazione;
+        str += "/>\n";
+
+        str += "\t\t <line x1=\"" + to_string(x2) + "\" y1=\"" + to_string(y2 - SBALZO_ANNOTAZIONI) + "\" x2=\"" + to_string(x2) + "\" y2=\"" + to_string(y2 + SBALZO_ANNOTAZIONI) + "\" ";
+        str += "style=\"stroke:rgb(0,0,0);stroke-width:" + to_string(SPESSORE_ANNOTAZIONI) + "\" ";
+        str += str_trasformazione;
+        str += "/>\n";
+
+    } else {
+
+        str += "\t\t <line x1=\"" + to_string(x1 - SBALZO_ANNOTAZIONI) + "\" y1=\"" + to_string(y1) + "\" x2=\"" + to_string(x1 + SBALZO_ANNOTAZIONI) + "\" y2=\"" + to_string(y1) + "\" ";
+        str += "style=\"stroke:rgb(0,0,0);stroke-width:" + to_string(SPESSORE_ANNOTAZIONI) + "\" ";
+        str += str_trasformazione;
+        str += "/>\n";
+
+        str += "\t\t <line x1=\"" + to_string(x2 - SBALZO_ANNOTAZIONI) + "\" y1=\"" + to_string(y1) + "\" x2=\"" + to_string(x2 + SBALZO_ANNOTAZIONI) + "\" y2=\"" + to_string(y1) + "\" ";
+        str += "style=\"stroke:rgb(0,0,0);stroke-width:" + to_string(SPESSORE_ANNOTAZIONI) + "\" ";
+        str += str_trasformazione;
+        str += "/>\n";
+
+    }
+
+    return str;
+}
+
+string guida_to_SVGstring( GuidaPrismatica * guida, bool visualizza_dimensioni ){
 
     if(guida == NULL) return "";
 
@@ -505,11 +561,19 @@ string guida_to_SVGstring( GuidaPrismatica * guida ){
     str += str_trasf;
     str += " /> \n";
 
+    if( visualizza_dimensioni ){
+        
+        // Imposto lo stile del testo
+        str += "\n\t<style> .stileannotazioni { font: italic 13px sans-serif; } </style>\n\n";
+
+        str += guida_linee_annotazione( -30, 40, 50, 40, str_trasf, "ti amo");
+    }
+
     return str;
 
 }
 
-void guida_to_SVG (GuidaPrismatica * guida , string nome_file ){
+void guida_to_SVG (GuidaPrismatica * guida , string nome_file, bool visualizza_dimensioni ){
 
     string str = guida_to_SVGstring( guida );
     
@@ -519,7 +583,7 @@ void guida_to_SVG (GuidaPrismatica * guida , string nome_file ){
 
     mySVG << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"600\">" << endl;
 
-    mySVG << guida_to_SVGstring( guida );
+    mySVG << guida_to_SVGstring( guida , visualizza_dimensioni);
 
     mySVG << "</svg>";
 

@@ -188,9 +188,10 @@
      * Funzione che permette di convertire un oggetto GuidaPrismatica in una stringa SVG
      * 
      * @param guida: guida prismatica che si vuole convertire in sorgente SVG
+     * @param visualizza_dimensioni (opzionale): permette di scegliere se visualizzare o meno le dimensioni  sul disegno
      * 
      */
-    std::string guida_to_SVGstring( GuidaPrismatica * guida );  
+    std::string guida_to_SVGstring( GuidaPrismatica * guida, bool visualizza_dimensioni = false);  
 
     /*
      * Funzione che permette di salvare in un file SVG il disegno della guida prismatica.
@@ -199,7 +200,7 @@
      * @param nome_file: nome del file SVG contenente il disegno
      * 
      */
-    void guida_to_SVG( GuidaPrismatica * guida , std::string nome_file );
+    void guida_to_SVG( GuidaPrismatica * guida , std::string nome_file, bool visualizza_dimensioni = false );
 
     /*
      * Funzione che permette il salvataggio di una guida in un file di testo .txt

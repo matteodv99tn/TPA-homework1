@@ -1,4 +1,4 @@
-# Documentazione V1.2.0
+# Documentazione V1.3.0
 
 Verranno qui riportate tutte le funzioni implementate nella libreria e fruibili dall'utente con una descrizione sia dei parametri in ingresso che dei valori restituiti.
 
@@ -45,6 +45,7 @@ Funzione che permette di _distuggere_ correttamente un puntatore ad una struct `
 ### `guida_to_SVGstring`
 Funzione che permette di ottenere il codice in formato _SVG_ di una guida prismatica che può essere integrato in generico file; l'unico parametro in ingresso alla funzione è
 - un puntatore alla struttura `GuidaPrismatica` che si vuole integrare nel proprio file
+- opzionalmente è possibile introdurre un valore booleano affermativo (che di default è negativo) che permette di renderizzare sulla figura le dimensioni degli elementi strutturali
 
 Il programma restituisce dunque una stringa contenente il codice correlato alla struttura.
 
