@@ -7,11 +7,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 
 # EXECUTABLE SECTION
-add_executable(mainEntry main.cpp)
-target_include_directories(mainEntry PRIVATE libraries)
+add_executable(mainDevice device.cpp)
+target_include_directories(mainDevice PRIVATE libraries)
 # Class A is not a library: its source file needs to be included in the target sources
-target_sources(mainEntry PRIVATE libreries/guida.cpp)
-target_link_libraries(mainEntry)
+target_sources(mainDevice PRIVATE libreries/guida.cpp)
+target_link_libraries(mainDevice)
 
 # EXECUTABLE SECTION
 add_executable(mwe mwe.cpp)
@@ -19,6 +19,15 @@ target_include_directories(mwe PRIVATE libraries)
 # Class A is not a library: its source file needs to be included in the target sources
 target_sources(mwe PRIVATE libreries/guida.cpp)
 target_link_libraries(mwe)
+
+# EXECUTABLE SECTION
+add_executable(machine machine.cpp)
+target_include_directories(machine PRIVATE libraries)
+# Class A is not a library: its source file needs to be included in the target sources
+target_sources(machine PRIVATE libreries/guida.cpp
+                              libreries/external/Livella.cpp
+                              libreries/external/sistemaAstePerno.cpp)
+target_link_libraries(machine)
 
 # EXECUTABLE SECTION
 add_executable(testCases tests/test_device.cpp)
