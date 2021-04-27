@@ -92,5 +92,6 @@ Ogni funzione implementata richiede come primo parametro un puntatore ad una str
 - `guida_set_lunghezza` modifica la lunghezza del sistema tramite un nuovo valore decimale; se la lunghezza inserita è negativa o nulla allora il valore non viene alterato
 - `guida_set_spessore` modifica lo spessore del cilindro di scorrimento per la guida; ad ogni esecuzione di questo comando segue un controllo dell'integrità strutturale tramite apposita funzione
 - `guida_set_corsa` modifica la corsa della guida lungo il cilindo; ad ogni esecuzione di questo comando segue un controllo dell'integrità strutturale tramite apposita funzione
+- `guida_set_angolo` permette di impostare l'angolo di inclinazione alpha della struttura rispetto all'orizzontale; l'angolo deve essere espresso in gradi
 - `guida_set_cerniera` e `guida_set_guida` permettono di modificare gli attributi associati ai rettangoli rispettivamente della cerniera o della guida che scorre sul cilindro; come parametri in ingresso è necessario introdurre le nuove dimensioni orizzontali e verticali e opzionalmente le coordinate RGB (tra 0 e 255) dei tre canali rosso, verde e blu 
 

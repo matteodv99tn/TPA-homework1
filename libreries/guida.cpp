@@ -164,6 +164,14 @@ int guida_set_corsa( GuidaPrismatica * guida , float c ){
 
 }
 
+
+void guida_set_angolo( GuidaPrismatica * guida, float deg){
+
+    guida->alpha = - deg * 0.0174533;
+
+}
+
+
 int guida_set_cerniera( GuidaPrismatica * guida , float dimx, float dimy, unsigned int col_R, unsigned int col_G, unsigned int col_B){
 
     int exit_value = 0;
@@ -334,6 +342,7 @@ void guida_modifica( GuidaPrismatica * guida){\
         cout << " 1. modificare la lunghezza e la corsa del sistema" << endl;
         cout << " 2. modificare le proprietà delle cerniere" << endl;
         cout << " 3. modificare le proprietà della guida" << endl;
+        cout << " 4. modificare l'angolo di inclinazione della guida" << endl;
         cout << " 0. per uscire dal menu di modifica" << endl;
         cout << "Scelta effettuata: ";
         cin >> scelta;
@@ -355,7 +364,14 @@ void guida_modifica( GuidaPrismatica * guida){\
                 guida_modifica_guida( guida );
                 guida_controlla_integrita;
                 break;
-                
+            
+            case 4:
+                cout << "Valore dell'angolo (in gradi) di inclinazione della struttura: ";
+                float temp;
+                cin >> temp;
+                guida_set_angolo( guida, temp );
+                break;
+
             default:
                 if( scelta != 0 )
                     cout << "Ingresso non valido!" << endl;

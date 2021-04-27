@@ -127,6 +127,14 @@
      */ 
     int guida_set_corsa( GuidaPrismatica * guida , float c );
 
+    /* 
+     * Funzione che permette di impostare l'angolo (in gradi) nel verso antiorario della struttura
+     *
+     * @param guida: puntatore alla guida prismatica da modificare
+     * @param deg: angolo in gradi da impostare
+    */
+    void guida_set_angolo( GuidaPrismatica * guida, float deg);
+
     /*
      * Funzione che permette di impostare la corsa di una guida prismatica effettuando dei controlli
      * 
