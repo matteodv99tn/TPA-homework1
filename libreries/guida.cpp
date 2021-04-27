@@ -728,9 +728,11 @@ void guida_to_SVG (GuidaPrismatica * guida , string nome_file, bool visualizza_d
 
 }
 
-float guida_valfrompos(string str, string da_cercare){
+float guida_val_dopo_str(string str, string da_cercare){
 
     string str_res = "";
+
+    cout << endl << "Cerco: " << da_cercare << " in " << endl << str << endl;
 
     int pos = str.find(da_cercare);
     pos += (int)da_cercare.size();
@@ -742,8 +744,6 @@ float guida_valfrompos(string str, string da_cercare){
     }
     for(int j = 0; j < 7; j++) str_res += str[pos + j];
 
-    cout << str_res << endl;
-
     return stof(str_res);
 
 }
@@ -751,7 +751,7 @@ float guida_valfrompos(string str, string da_cercare){
 GuidaPrismatica * guida_parse_svg(string file_name, bool with_header){
 
     int tobesummed = 0;
-    GuidaPrismatica * guida;
+    GuidaPrismatica * guida = new GuidaPrismatica;
     string str;
 
     vector<string> svglines;
@@ -766,8 +766,26 @@ GuidaPrismatica * guida_parse_svg(string file_name, bool with_header){
 
     if(with_header) tobesummed = 3;
 
-    guida->lunghezza = guida_valfrompos( svglines[0 + tobesummed], "width=\"");
-    guida->lunghezza = guida_valfrompos( svglines[0 + tobesummed], "height=\"");
+    guida->lunghezza = guida_val_dopo_str( svglines[0 + tobesummed], "width=\"" );
+    guida->spessore = guida_val_dopo_str( svglines[0 + tobesummed], "height=\"" );
+
+    guida->incastri = grect_init(
+            guida_val_dopo_str( svglines[1 + tobesummed], "width=\"" ),
+            guida_val_dopo_str( svglines[1 + tobesummed], "height=\"" )
+        );
+
+    guida->guida = grect_init(
+            guida_val_dopo_str( svglines[3+ tobesummed], "width=\"" ),
+            guida_val_dopo_str( svglines[3 + tobesummed], "height=\"" )
+        );
+
+    float temp = guida_val_dopo_str(svglines[3 + tobesummed], "x = \"" );
+    guida->corsa = guida->lunghezza / 2 - guida->guida->dim_x / 2 - temp;
+
+    guida->alpha = 0;
+    guida->pos_x = 400;
+    guida->pos_y = 300;
+
 
     return guida;
 }
