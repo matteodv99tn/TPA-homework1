@@ -1,3 +1,6 @@
+#ifndef _SISTEMAASTE_H_
+#define _SISTEMAASTE_H_
+
 #include <iostream>
 #include <string>
 
@@ -47,3 +50,5 @@ device *inserisciDati();
 void menu(device *);
 
 void SAP_printDevice(device *);
+
+#endif

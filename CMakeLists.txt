@@ -25,6 +25,7 @@ add_executable(machine machine.cpp)
 target_include_directories(machine PRIVATE libraries)
 # Class A is not a library: its source file needs to be included in the target sources
 target_sources(machine PRIVATE libreries/guida.cpp
+                              libreries/livellaMobile.cpp
                               libreries/external/Livella.cpp
                               libreries/external/sistemaAstePerno.cpp)
 target_link_libraries(machine)
