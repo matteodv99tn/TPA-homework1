@@ -4,10 +4,10 @@
 #include <string.h> 
 #include <fstream>
 #include <streambuf>
-#include <string>
 #include <sstream>
 #include <math.h>
 #include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -726,6 +726,50 @@ void guida_to_SVG (GuidaPrismatica * guida , string nome_file, bool visualizza_d
 
     mySVG.close();
 
+}
+
+float guida_valfrompos(string str, string da_cercare){
+
+    string str_res = "";
+
+    int pos = str.find(da_cercare);
+    pos += (int)da_cercare.size();
+    
+    while(str[pos] != '.'){
+        
+        str_res += str[pos];
+        pos++;
+    }
+    for(int j = 0; j < 7; j++) str_res += str[pos + j];
+
+    cout << str_res << endl;
+
+    return stof(str_res);
+
+}
+
+GuidaPrismatica * guida_parse_svg(string file_name, bool with_header){
+
+    int tobesummed = 0;
+    GuidaPrismatica * guida;
+    string str;
+
+    vector<string> svglines;
+
+    ifstream svgfile( file_name + ".svg" );
+
+    while( svgfile.good() ){
+        getline(svgfile, str);
+        svglines.push_back(str);
+    }
+    svgfile.close();
+
+    if(with_header) tobesummed = 3;
+
+    guida->lunghezza = guida_valfrompos( svglines[0 + tobesummed], "width=\"");
+    guida->lunghezza = guida_valfrompos( svglines[0 + tobesummed], "height=\"");
+
+    return guida;
 }
 
 void guida_salva_file ( GuidaPrismatica * guida, string nome_file ){

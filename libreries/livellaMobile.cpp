@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string.h> 
+#include <fstream>
 #include "livellaMobile.h"
 
 #define GUIDA_DIMX 40
@@ -70,3 +72,35 @@ LivellaMobile * livellaMobile_init(float posx, float posy, float dist, float per
 
     // livella->pedana = plate_init(10, 800, livella->pistone[0], livella->pistone[1]); 
 }
+
+void livellaMobile_to_svg(LivellaMobile * livella, string nome_file){
+    
+    string str;
+
+    str += "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n\n";
+    str += "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"600\"> \n";
+
+    str += guida_to_SVGstring( livella->supporto[0] );
+    str += guida_to_SVGstring( livella->supporto[1] );
+
+    str += "</svg>";
+
+    ofstream mySVG( nome_file + ".svg" );
+
+    mySVG << str;
+
+    mySVG.close();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -210,6 +210,8 @@
      */
     void guida_to_SVG( GuidaPrismatica * guida , std::string nome_file, bool visualizza_dimensioni = false );
 
+    GuidaPrismatica * guida_parse_svg(std::string file_name, bool with_header);
+
     /*
      * Funzione che permette il salvataggio di una guida in un file di testo .txt
      * 
