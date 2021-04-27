@@ -334,7 +334,7 @@ void guida_modifica_cerniera (GuidaPrismatica * guida){
 
 void guida_modifica( GuidaPrismatica * guida){\
 
-    int scelta = 0;
+    char scelta = '0';
 
     do{
 
@@ -350,22 +350,22 @@ void guida_modifica( GuidaPrismatica * guida){\
 
         switch( scelta ){
 
-            case 1:
+            case '1':
                 guida_modifica_lunghezza( guida );
                 guida_controlla_integrita( guida );
                 break;
 
-            case 2:
+            case '2':
                 guida_modifica_cerniera( guida );
                 guida_controlla_integrita( guida );
                 break;
 
-            case 3: 
+            case '3': 
                 guida_modifica_guida( guida );
                 guida_controlla_integrita;
                 break;
             
-            case 4:
+            case '4':
                 cout << "Valore dell'angolo (in gradi) di inclinazione della struttura: ";
                 float temp;
                 cin >> temp;
@@ -373,13 +373,13 @@ void guida_modifica( GuidaPrismatica * guida){\
                 break;
 
             default:
-                if( scelta != 0 )
+                if( scelta != '0' )
                     cout << "Ingresso non valido!" << endl;
                 break;
         }
 
 
-    } while( scelta  != 0 );
+    } while( scelta  != '0' );
 
     guida_controlla_integrita( guida );
 
