@@ -226,4 +226,10 @@
      */
     GuidaPrismatica * guida_carica_file( std::string nome_file );
 
+    /**
+    /*  Funzione per input di float,
+    /*  ritorna il valore inserito da tastiera 
+    */
+    float input();
+
 #endif
