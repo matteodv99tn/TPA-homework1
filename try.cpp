@@ -9,7 +9,5 @@ int main(){
 
     GuidaPrismatica* tmp = guida_init(400,500,30,15,200,20);
     guida_modifica(tmp);
-
-    guida_to_SVG (tmp,"e");
     guida_distruggi(tmp);
 }
