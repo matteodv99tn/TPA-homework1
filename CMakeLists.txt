@@ -21,7 +21,7 @@ target_sources(mwe PRIVATE libreries/guida.cpp)
 target_link_libraries(mwe)
 
 # EXECUTABLE SECTION
-add_executable(testCases mytest.cpp)
+add_executable(testCases tests/test_device.cpp)
 target_include_directories(testCases PRIVATE ../libraries)
 # Class A is not a library: its source file needs to be included in the target sources
 target_sources(testCases PRIVATE libreries/guida.cpp)
