@@ -231,14 +231,15 @@ void guida_modifica_lunghezza (GuidaPrismatica * guida ){
     float temp;
 
     cout << "Inserire un nuovo valore di lunghezza (attuale: " << guida->lunghezza << "): ";
-    cin >> temp;
+    temp=input();
+    
     
     if ( guida_set_lunghezza(guida, temp) == 1 ){
         cout << "Valore in ingresso negativo o nullo; lunghezza non modificata!";
     }
 
     cout << "Inserire un nuovo valore di corsa (attuale: " << guida->corsa << "): ";
-    cin >> temp;
+    temp=input();
     guida_set_corsa(guida, temp);
 }
 
@@ -249,9 +250,9 @@ void guida_modifica_cerniere ( GuidaPrismatica * guida ){
     char scelta;
 
     cout << "Dimensione orizzontale della cerniera (attuale: " << guida->incastri->dim_x << "): ";
-    cin >> x;
+    x=input();
     cout << "Dimensione verticale della cerniera (attuale: " << guida->incastri->dim_y << "): ";
-    cin >> y;
+    y=input();
 
     cout << "Modificare i colori? [s/n]";
     do{
@@ -283,9 +284,9 @@ void guida_modifica_guida ( GuidaPrismatica * guida ){
     char scelta;
 
     cout << "Dimensione orizzontale della guida (attuale: " << guida->guida->dim_x << "): ";
-    cin >> x;
+    x = input();
     cout << "Dimensione verticale della guida (attuale: " << guida->guida->dim_y << "): ";
-    cin >> y;
+    y = input();
 
     cout << "Modificare i colori? [s/n]";
     do{
@@ -319,14 +320,14 @@ void guida_modifica_cerniera (GuidaPrismatica * guida){
     
     cout << "Inserire la dimensione orizzontale della cerniera (attuale: " << guida->incastri->dim_x << "): ";
     do {
-        cin >> temp;
+        temp = input();
     } while (temp < 0);
     
     if(temp != 0) guida->incastri->dim_x = temp;
     
     cout << "Inserire la dimensione verticale della cerniera (attuale: " << guida->incastri->dim_y << "): ";
     do {
-        cin >> temp;
+       temp = input();
     } while (temp < 0);
     
     if(temp != 0) guida->incastri->dim_y = temp;
@@ -334,7 +335,7 @@ void guida_modifica_cerniera (GuidaPrismatica * guida){
 
 void guida_modifica( GuidaPrismatica * guida){\
 
-    int scelta = 0;
+    char scelta = '0';
 
     do{
 
@@ -350,36 +351,36 @@ void guida_modifica( GuidaPrismatica * guida){\
 
         switch( scelta ){
 
-            case 1:
+            case '1':
                 guida_modifica_lunghezza( guida );
                 guida_controlla_integrita( guida );
                 break;
 
-            case 2:
+            case '2':
                 guida_modifica_cerniera( guida );
                 guida_controlla_integrita( guida );
                 break;
 
-            case 3: 
+            case '3': 
                 guida_modifica_guida( guida );
                 guida_controlla_integrita;
                 break;
             
-            case 4:
+            case '4':
                 cout << "Valore dell'angolo (in gradi) di inclinazione della struttura: ";
                 float temp;
-                cin >> temp;
+                temp = input();
                 guida_set_angolo( guida, temp );
                 break;
 
             default:
-                if( scelta != 0 )
+                if( scelta != '0' )
                     cout << "Ingresso non valido!" << endl;
                 break;
         }
 
 
-    } while( scelta  != 0 );
+    } while( scelta  != '0' );
 
     guida_controlla_integrita( guida );
 
@@ -823,4 +824,18 @@ GuidaPrismatica * guida_carica_file( string nome_file ){
     return guida;
 
 }
-
+/**
+/*  Funzione per input di float,
+/*  ritorna il valore inserito da tastiera 
+*/
+float input(){
+    float tmp;
+    cin>>tmp;
+    while(!(std::cin.good())){
+		std::cout<<"\nErrore: Parametro non valido, reinserire\n ";
+		std::cin.clear();
+      	while (std::cin.get() != '\n');
+	    std::cin>>tmp;
+	}
+    return tmp;
+}
