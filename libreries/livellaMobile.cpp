@@ -8,6 +8,8 @@
 #define GUIDA_DIMY 40
 #define GUIDA_DIST_REL 20
 
+#define LIV_REF_H 50
+
 #pragma region // Funzioni ausiliarie per l'inizializzazione della Livella
 
 float liv_determinacorsa(GuidaPrismatica * guida, float perc){
@@ -39,8 +41,6 @@ float liv_livposfromsup(LivellaMobile * liv, unsigned int index){
 
 void liv_posisizionilivella(LivellaMobile * livella, float hc, float bc){
 
-    vector <float> res;
-
     livella->dati_livella.posy = livella->pos_y - hc;
 
     livella->dati_livella.posx1 = liv_livposfromsup(livella, 0) - bc / 2;
@@ -48,7 +48,21 @@ void liv_posisizionilivella(LivellaMobile * livella, float hc, float bc){
 
 }
 
-
+void liv_inizializzalivella(LivellaMobile * livella ){
+    
+    livella->livella = livella_init( 
+        livella->dati_livella.posx1 , 
+        livella->dati_livella.posx2 , 
+        livella->dati_livella.posy ,
+        livella->dati_livella.largbase, 
+        livella->dati_livella.largtesta, 
+        livella->dati_livella.alt_cilindro,
+        livella->dati_livella.alt_dx,
+        livella->dati_livella.alt_sx,
+        livella->dati_livella.spessore,
+        livella->dati_livella.lunghezza
+        );
+}
 
 
 #pragma endregion
@@ -63,8 +77,6 @@ LivellaMobile * livellaMobile_init(float posx, float posy, float dist, float per
     livella->distanza = dist;
     livella->perc_corsa = perc;
 
-    #pragma region // Inizializzazione delle guide prismatiche di supporto
-    
     livella->supporto[0] = guida_init(
             0,
             livella->pos_y,
@@ -87,27 +99,16 @@ LivellaMobile * livellaMobile_init(float posx, float posy, float dist, float per
     guida_set_corsa( livella->supporto[0], liv_determinacorsa(livella->supporto[0], livella->perc_corsa) );
     guida_set_corsa( livella->supporto[1], liv_determinacorsa(livella->supporto[1], livella->perc_corsa) );
 
-    #pragma endregion
+    livella->dati_livella.alt_cilindro = LIV_REF_H;
+    livella->dati_livella.alt_dx = 50;
+    livella->dati_livella.alt_sx = 30;
+    livella->dati_livella.largbase = livella->supporto[0]->guida->dim_x - 6;
+    livella->dati_livella.largtesta = livella->dati_livella.largbase * 2/3;
+    livella->dati_livella.spessore = 10;
+    livella->dati_livella.lunghezza = livella->distanza * 1.5;
 
-    #pragma region // Inizializzazione della livella
+    liv_inizializzalivella( livella );
 
-    float hc = 90;
-    float bc = 30;
-
-    livella->livella = livella_init( 
-        livella->dati_livella.posx1 , 
-        livella->dati_livella.posx2 , 
-        livella->dati_livella.posy ,
-        livella->dati_livella.largbase, 
-        livella->dati_livella.largtesta, 
-        livella->dati_livella.alt_cilindro,
-        livella->dati_livella.alt_dx,
-        livella->dati_livella.alt_sx,
-        livella->dati_livella.spessore,
-        livella->dati_livella.lunghezza,
-        );
-
-    #pragma endregion
 
     return livella;
 
@@ -122,13 +123,31 @@ int livellaMobile_controlla( LivellaMobile * livella ){
     int returnstatus = 0;
 
 
-    if( livella->livella->mypiston1->larg_1 > livella->supporto[0]->guida->dim_x){
+    if( livella->dati_livella.largbase > livella->supporto[0]->guida->dim_x || livella->dati_livella.largbase <= 0){
 
-        livella->livella->mypiston1->larg_1 = livella->supporto[0]->guida->dim_x - 5;
+        livella->dati_livella.largbase = livella->supporto[0]->guida->dim_x - 5;
+        returnstatus = 1;
 
     }
 
+    if( livella->dati_livella.largtesta > livella->dati_livella.largbase || livella->dati_livella.largtesta <= 0) {
+       
+        livella->dati_livella.largtesta = livella->dati_livella.largbase * 2 / 3;
+        returnstatus = 1;
+    }
 
+    if( livella->dati_livella.alt_cilindro <= 0 ){
+
+        livella->dati_livella.alt_cilindro = LIV_REF_H;
+        returnstatus = 1;
+
+    }
+
+    if(returnstatus != 0) {
+        livella_destroy( livella->livella);
+        liv_inizializzalivella( livella );
+    }
+    
     return returnstatus;
 }
 
