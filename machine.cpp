@@ -9,12 +9,13 @@ int main(){
 
     LivellaMobile * mylivella;
 
-    mylivella = livellaMobile_init(400, 300, 300, 50);
+    mylivella = livellaMobile_init(400, 300, 300, 100);
+    cout << "Inizializzazione effettuata!" << endl << endl;
 
-    /*string str = livella_to_ParamSVG(mylivella->pistone[0], mylivella->pistone[1], mylivella->pedana);
-    ofstream out ("ciaghi");
-    out << str;
-    out.close();*/
+    guida_visualizza_info(mylivella->supporto[0]);
+
+
+    livellaMobile_to_svg(mylivella, "livtest");
 
     return EXIT_SUCCESS;
 }

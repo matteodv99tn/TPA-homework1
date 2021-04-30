@@ -37,23 +37,18 @@ float liv_livposfromsup(LivellaMobile * liv, unsigned int index){
     return liv->supporto[index]->pos_x - liv->supporto[index]->lunghezza/2 + liv->supporto[index]->corsa;
 }
 
-vector <float> liv_posisizionilivella(LivellaMobile * livella, float hc, float bc){
+void liv_posisizionilivella(LivellaMobile * livella, float hc, float bc){
 
     vector <float> res;
 
-    float posy = livella->pos_y - hc;
-    res.push_back( posy );
+    livella->dati_livella.posy = livella->pos_y - hc;
 
-    float posx1 = liv_livposfromsup(livella, 0) - bc / 2;
-    res.push_back( posx1 );
-
-    float posx2 = liv_livposfromsup(livella, 1) - bc / 2;
-    res.push_back( posx2 );
-
-
-    return res;
+    livella->dati_livella.posx1 = liv_livposfromsup(livella, 0) - bc / 2;
+    livella->dati_livella.posx2 = liv_livposfromsup(livella, 1) - bc / 2;
 
 }
+
+
 
 
 #pragma endregion
@@ -99,13 +94,42 @@ LivellaMobile * livellaMobile_init(float posx, float posy, float dist, float per
     float hc = 90;
     float bc = 30;
 
-    vector <float> pos = liv_posisizionilivella(livella, hc, bc);
-    livella->livella = livella_init( pos[1], pos[2], pos[0], bc, bc * 2 /3 , hc, 30, 20, 10, 700  );
+    livella->livella = livella_init( 
+        livella->dati_livella.posx1 , 
+        livella->dati_livella.posx2 , 
+        livella->dati_livella.posy ,
+        livella->dati_livella.largbase, 
+        livella->dati_livella.largtesta, 
+        livella->dati_livella.alt_cilindro,
+        livella->dati_livella.alt_dx,
+        livella->dati_livella.alt_sx,
+        livella->dati_livella.spessore,
+        livella->dati_livella.lunghezza,
+        );
 
     #pragma endregion
 
     return livella;
 
+}
+
+#pragma region // Funzioni ausiliarie per la correzione della struttura dati
+
+#pragma endregion
+
+int livellaMobile_controlla( LivellaMobile * livella ){
+
+    int returnstatus = 0;
+
+
+    if( livella->livella->mypiston1->larg_1 > livella->supporto[0]->guida->dim_x){
+
+        livella->livella->mypiston1->larg_1 = livella->supporto[0]->guida->dim_x - 5;
+
+    }
+
+
+    return returnstatus;
 }
 
 void livellaMobile_to_svg(LivellaMobile * livella, string nome_file){
