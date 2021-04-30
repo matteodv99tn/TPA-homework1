@@ -9,8 +9,7 @@
     struct LivellaMobile{
         
         GuidaPrismatica * supporto[2];
-        Piston * pistone[2];
-        Plate * pedana;
+        Livella * livella;
 
         float pos_x;
         float pos_y;
@@ -20,5 +19,7 @@
     };
 
     LivellaMobile * livellaMobile_init(float posx, float posy, float dist, float perc);
+
+    void livellaMobile_to_svg(LivellaMobile * livella, string nome_file);
 
 #endif

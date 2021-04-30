@@ -733,7 +733,7 @@ float guida_val_dopo_str(string str, string da_cercare){
 
     string str_res = "";
 
-    cout << endl << "Cerco: " << da_cercare << " in " << endl << str << endl;
+    // cout << endl << "Cerco: " << da_cercare << " in " << endl << str << endl;
 
     int pos = str.find(da_cercare);
     pos += (int)da_cercare.size();
@@ -747,6 +747,64 @@ float guida_val_dopo_str(string str, string da_cercare){
 
     return stof(str_res);
 
+}
+
+vector <int> guida_colori( string str ){
+
+    vector <int> res;
+
+    int pos = str.find("fill:rgb(");
+    pos += 9;
+
+    string temp = "";
+    
+    while(str[pos] != ','){
+        temp += str[pos];
+        pos++;
+    }
+    res.push_back( stoi(temp) );
+    temp = "";
+    pos++;
+    
+    while(str[pos] != ','){
+        temp += str[pos];
+        pos++;
+    }
+    res.push_back( stoi(temp) );
+    temp = "";
+    pos++;
+    
+    while(str[pos] != ')'){
+        temp += str[pos];
+        pos++;
+    }
+    res.push_back( stoi(temp) );
+
+    return res;
+}
+
+vector <float> guida_parse_pos( string str){
+
+    vector <float> res;
+    string temp = "";
+    float t;
+
+    int pos = str.find("matrix(");
+    pos += 7;
+
+    istringstream istr(temp);
+    
+    istr >> t >> t;
+    res.push_back( asin(t) );
+    istr >> t >> t;
+
+    istr >> t;
+    res.push_back( t );
+    istr >> t;
+    res.push_back( t );
+
+
+    return res;
 }
 
 GuidaPrismatica * guida_parse_svg(string file_name, bool with_header){
@@ -770,22 +828,32 @@ GuidaPrismatica * guida_parse_svg(string file_name, bool with_header){
     guida->lunghezza = guida_val_dopo_str( svglines[0 + tobesummed], "width=\"" );
     guida->spessore = guida_val_dopo_str( svglines[0 + tobesummed], "height=\"" );
 
+    vector<int> colcerniera = guida_colori( svglines[1+ tobesummed] );
     guida->incastri = grect_init(
             guida_val_dopo_str( svglines[1 + tobesummed], "width=\"" ),
             guida_val_dopo_str( svglines[1 + tobesummed], "height=\"" )
         );
+    guida->incastri->colore[0] = colcerniera[0];
+    guida->incastri->colore[1] = colcerniera[1];
+    guida->incastri->colore[2] = colcerniera[2];
 
+    vector<int> colguida = guida_colori( svglines[3+ tobesummed] );
     guida->guida = grect_init(
             guida_val_dopo_str( svglines[3+ tobesummed], "width=\"" ),
             guida_val_dopo_str( svglines[3 + tobesummed], "height=\"" )
         );
+    guida->guida->colore[0] = colguida[0];
+    guida->guida->colore[1] = colguida[1];
+    guida->guida->colore[2] = colguida[2];
+
 
     float temp = guida_val_dopo_str(svglines[3 + tobesummed], "x = \"" );
     guida->corsa = guida->lunghezza / 2 - guida->guida->dim_x / 2 - temp;
 
-    guida->alpha = 0;
-    guida->pos_x = 400;
-    guida->pos_y = 300;
+    vector <float> coord = guida_parse_pos(svglines[3 + tobesummed]);
+    guida->alpha = coord[0];
+    guida->pos_x = coord[1];
+    guida->pos_y = coord[2];
 
 
     return guida;
