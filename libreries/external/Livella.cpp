@@ -51,6 +51,7 @@ Livella * livella_init(float posx1, float posx2, float posy, float larg1, float 
     new_livella -> mypiston2 = piston_init(posx2, posy, alt1, larg1, altD, larg2);
     new_livella -> myplate = plate_init(spess, lung, posx1, posx2, posy, alt1, larg1, altS, altD, larg2);
 
+    return new_livella;
 }
 
 
