@@ -67,6 +67,7 @@
      * @param posx: ascissa del centro del punto medio dei due supporti della livella mobile
      * @param posy: ordinata del centro del punto medio dei due supporti della livella mobile
      * @param dist: distanza tra i centri dei due cilindri della livella (e dunque delle guide prismatiche)
+     * @param perc: percentuale di corsa utile delle guide prismatiche
      * @param alt_cil: altezza fissa delle camere dei cilindri della livella
      * @param alt_sx: altezza del cilindro a sinistra della livella
      * @param alt_dx: altezza del cilindro a destra della livella

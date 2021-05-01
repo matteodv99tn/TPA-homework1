@@ -1,4 +1,4 @@
-# Documentazione V1.3.0
+# Documentazione per la libreria GuidaPrismatica - v1.4.0
 
 Verranno qui riportate tutte le funzioni implementate nella libreria e fruibili dall'utente con una descrizione sia dei parametri in ingresso che dei valori restituiti.
 

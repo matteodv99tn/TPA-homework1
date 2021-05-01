@@ -135,9 +135,10 @@ LivellaMobile * livellaMobile_init(float posx, float posy, float dist, float per
 int livellaMobile_controlla( LivellaMobile * livella ){
 
     if(livella == NULL) return -1;
-
+    
     int returnstatus = 0;
 
+    if( guida_controlla_integrita(livella->supporto[0]) > 0 ) returnstatus = 2;
 
     if( livella->dati_livella.largbase > livella->supporto[0]->guida->dim_x || livella->dati_livella.largbase <= 0){
 
