@@ -7,15 +7,11 @@
 
 int main(){
 
-    LivellaMobile * mylivella;
-
-    mylivella = livellaMobile_init(400, 300, 300, 100);
-    cout << "Inizializzazione effettuata!" << endl << endl;
-
-    guida_visualizza_info(mylivella->supporto[0]);
-
+    LivellaMobile * mylivella = livellaMobile_da_console();
 
     livellaMobile_to_svg(mylivella, "livtest");
 
+    livellaMobile_destroy(mylivella);
+    
     return EXIT_SUCCESS;
 }

@@ -12,62 +12,81 @@
 
 #pragma region // Funzioni ausiliarie per l'inizializzazione della Livella
 
-float liv_determinacorsa(GuidaPrismatica * guida, float perc){
+    // Funzione che permette di determinare il valore della corsa delle guide prismatiche in funzione della percentuale
+    float liv_determinacorsa(GuidaPrismatica * guida, float perc){
 
-    float res;
+        float res;
 
-    float corsa_utile = guida->lunghezza - guida->incastri->dim_x - guida->incastri->dim_y;
+        float corsa_utile = guida->lunghezza - guida->incastri->dim_x - guida->guida->dim_x / 2;
 
-    res = guida->incastri->dim_x / 2 + perc * corsa_utile / 100;
+        res = guida->incastri->dim_x / 2 + perc * corsa_utile / 100;
 
-    return res;
-}
+        return res;
+    }
 
-void liv_impostaposizione_supporti(LivellaMobile * livella){
+    // Funzione che permette di determinare le coordinate del centro dei supporti (guide prismatiche) della machine
+    void liv_impostaposizione_supporti(LivellaMobile * livella){
 
-    float pos = livella->pos_x;
-    pos -= livella->supporto[0]->lunghezza / 2 + livella->supporto[0]->incastri->dim_x / 2;
-    pos -= GUIDA_DIST_REL / 2;
-    livella->supporto[0]->pos_x = pos;
+        float pos = livella->pos_x;
+        pos -= livella->supporto[0]->lunghezza / 2 + livella->supporto[0]->incastri->dim_x / 2;
+        pos -= GUIDA_DIST_REL / 2;
+        livella->supporto[0]->pos_x = pos;
 
-    pos += livella->supporto[0]->lunghezza + GUIDA_DIST_REL + livella->supporto[0]->incastri->dim_x;
-    livella->supporto[1]->pos_x = pos;
+        pos += livella->supporto[0]->lunghezza + GUIDA_DIST_REL + livella->supporto[0]->incastri->dim_x;
+        livella->supporto[1]->pos_x = pos;
 
-}
+    }
 
-float liv_livposfromsup(LivellaMobile * liv, unsigned int index){
-    return liv->supporto[index]->pos_x - liv->supporto[index]->lunghezza/2 + liv->supporto[index]->corsa;
-}
+    // funzione che permette di determinare la posizione orizzontale dei pistoni della livella, usate nella funzione successiva
+    float liv_livposfromsup(LivellaMobile * liv, unsigned int index){
+        return liv->supporto[index]->pos_x - liv->supporto[index]->lunghezza/2 + liv->supporto[index]->corsa;
+    }
 
-void liv_posisizionilivella(LivellaMobile * livella, float hc, float bc){
+    // Funzione che permette di calcolare la posizione associata ai pistoni della livella
+    void liv_posisizionilivella(LivellaMobile * livella){
 
-    livella->dati_livella.posy = livella->pos_y - hc;
+        livella->dati_livella.posy = livella->pos_y - livella->dati_livella.alt_cilindro;
 
-    livella->dati_livella.posx1 = liv_livposfromsup(livella, 0) - bc / 2;
-    livella->dati_livella.posx2 = liv_livposfromsup(livella, 1) - bc / 2;
+        livella->dati_livella.posx1 = liv_livposfromsup(livella, 0) - livella->dati_livella.largbase / 2;
+        livella->dati_livella.posx2 = liv_livposfromsup(livella, 1) - livella->dati_livella.largbase / 2;
 
-}
+    }
 
-void liv_inizializzalivella(LivellaMobile * livella ){
-    
-    livella->livella = livella_init( 
-        livella->dati_livella.posx1 , 
-        livella->dati_livella.posx2 , 
-        livella->dati_livella.posy ,
-        livella->dati_livella.largbase, 
-        livella->dati_livella.largtesta, 
-        livella->dati_livella.alt_cilindro,
-        livella->dati_livella.alt_dx,
-        livella->dati_livella.alt_sx,
-        livella->dati_livella.spessore,
-        livella->dati_livella.lunghezza
-        );
-}
+    // Funzione che permette di inizializzare la livella determinandone la posizione e utilizzando i dati nella struttura dati_livella
+    void liv_inizializzalivella(LivellaMobile * livella ){
+        
+        liv_posisizionilivella(livella);
 
+        livella->livella = livella_init( 
+                livella->dati_livella.posx1,
+                livella->dati_livella.posx2,
+                livella->dati_livella.posy,
+                livella->dati_livella.alt_cilindro,
+                livella->dati_livella.largbase,
+                livella->dati_livella.largtesta,
+                livella->dati_livella.alt_sx,
+                livella->dati_livella.alt_dx,
+                livella->dati_livella.spessore,
+                livella->dati_livella.lunghezza
+            );
+    }
+
+    // Funzione che inizializza i dati della struttura dati_livella
+    void liv_inizializza_dati(LivellaMobile * livella ){
+
+        livella->dati_livella.alt_cilindro = LIV_REF_H;
+        livella->dati_livella.alt_dx = 50;
+        livella->dati_livella.alt_sx = 30;
+        livella->dati_livella.largbase = livella->supporto[0]->guida->dim_x * 4 / 5;
+        livella->dati_livella.largtesta = livella->dati_livella.largbase * 2/3;
+        livella->dati_livella.spessore = 15;
+        livella->dati_livella.lunghezza = livella->distanza * 1.7;
+
+    }
 
 #pragma endregion
 
-LivellaMobile * livellaMobile_init(float posx, float posy, float dist, float perc){
+LivellaMobile * livellaMobile_init(float posx, float posy, float dist, float perc, float alt_cil, float alt_sx, float alt_dx){
 
     LivellaMobile * livella = new LivellaMobile;
 
@@ -99,33 +118,30 @@ LivellaMobile * livellaMobile_init(float posx, float posy, float dist, float per
     guida_set_corsa( livella->supporto[0], liv_determinacorsa(livella->supporto[0], livella->perc_corsa) );
     guida_set_corsa( livella->supporto[1], liv_determinacorsa(livella->supporto[1], livella->perc_corsa) );
 
-    livella->dati_livella.alt_cilindro = LIV_REF_H;
-    livella->dati_livella.alt_dx = 50;
-    livella->dati_livella.alt_sx = 30;
-    livella->dati_livella.largbase = livella->supporto[0]->guida->dim_x - 6;
-    livella->dati_livella.largtesta = livella->dati_livella.largbase * 2/3;
-    livella->dati_livella.spessore = 10;
-    livella->dati_livella.lunghezza = livella->distanza * 1.5;
+    liv_inizializza_dati( livella );
+
+    livella->dati_livella.alt_cilindro = alt_cil;
+    livella->dati_livella.alt_sx = alt_sx;
+    livella->dati_livella.alt_dx = alt_dx;
 
     liv_inizializzalivella( livella );
 
+    livellaMobile_controlla( livella );
 
     return livella;
 
 }
 
-#pragma region // Funzioni ausiliarie per la correzione della struttura dati
-
-#pragma endregion
-
 int livellaMobile_controlla( LivellaMobile * livella ){
+
+    if(livella == NULL) return -1;
 
     int returnstatus = 0;
 
 
     if( livella->dati_livella.largbase > livella->supporto[0]->guida->dim_x || livella->dati_livella.largbase <= 0){
 
-        livella->dati_livella.largbase = livella->supporto[0]->guida->dim_x - 5;
+        livella->dati_livella.largbase = livella->supporto[0]->guida->dim_x - 10;
         returnstatus = 1;
 
     }
@@ -143,7 +159,33 @@ int livellaMobile_controlla( LivellaMobile * livella ){
 
     }
 
-    if(returnstatus != 0) {
+    if( livella->dati_livella.alt_sx < 0 ){
+
+        livella->dati_livella.alt_sx = 10;
+        returnstatus = 1;
+
+    }
+
+    if( livella->dati_livella.alt_dx < 0 ){
+
+        livella->dati_livella.alt_dx = 10;
+        returnstatus = 1;
+
+    }
+
+    if( livella->dati_livella.alt_dx > livella->dati_livella.alt_cilindro - 10){
+
+        livella->dati_livella.alt_dx = livella->dati_livella.alt_cilindro - 10;
+        returnstatus = 1;
+    }
+
+    if( livella->dati_livella.alt_sx > livella->dati_livella.alt_cilindro - 10){
+
+        livella->dati_livella.alt_sx = livella->dati_livella.alt_cilindro - 10;
+        returnstatus = 1;
+    }
+
+    if(returnstatus == 1) {
         livella_destroy( livella->livella);
         liv_inizializzalivella( livella );
     }
@@ -153,6 +195,8 @@ int livellaMobile_controlla( LivellaMobile * livella ){
 
 void livellaMobile_to_svg(LivellaMobile * livella, string nome_file){
     
+    if(livella == NULL) return;
+
     string str;
 
     str += "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n\n";
@@ -173,9 +217,85 @@ void livellaMobile_to_svg(LivellaMobile * livella, string nome_file){
 
 }
 
+LivellaMobile * livellaMobile_da_console(){
 
+    float x, y, dist, perc, hc, hs, hd;
 
+    cout << "Coordinate del centro delle due guide prismatiche che supportano la livella: ";
+    cin >> x >> y;
 
+    cout << "Distanza tra i cilindri della livella: ";
+    cin >> dist;
+    cout << "Percentuale di corsa delle guide prismatiche: ";
+    cin >> perc;
+
+    cout << "Indicare l'altezza base del cilindro: ";
+    cin >> hc;
+    cout << "Estensione del cilindro a sinistra: ";
+    cin >> hs;
+    cout << "Estensione del cilindro a destra: ";
+    cin >> hd;
+
+    return livellaMobile_init(x, y, dist, perc, hc, hs, hd);
+
+}
+
+void livellaMobile_destroy(LivellaMobile * livella){
+
+    if(livella == NULL) return;
+
+    livella_destroy(livella->livella);
+    guida_distruggi(livella->supporto[0]);
+    guida_distruggi(livella->supporto[1]);
+
+    delete livella;
+
+}
+
+void livellaMobile_salva_file(LivellaMobile * livella, std::string nome_file ){
+
+    if(livella == NULL) return;
+
+    ofstream outfile(nome_file+ ".txt");
+
+    outfile << livella->pos_x << " " << livella->pos_y << endl;
+    outfile << livella->distanza << " " << livella->perc_corsa << endl;
+
+    outfile << livella->dati_livella.alt_cilindro << " ";
+    outfile << livella->dati_livella.alt_sx << " ";
+    outfile << livella->dati_livella.alt_dx << " ";
+    outfile << livella->dati_livella.largbase << " ";
+    outfile << livella->dati_livella.largtesta << " ";
+    outfile << livella->dati_livella.lunghezza ;
+
+    outfile.close();
+
+}
+
+LivellaMobile * livellaMobile_da_file(std::string nome_file){
+
+    float x, y, dist, perc, h1, h2, h3;
+    ifstream infile( nome_file + ".txt" );
+
+    if ( !infile.is_open() ){
+
+        return NULL;
+    }
+
+    infile >> x >> y >> dist >> perc >> h1 >> h2 >> h3;
+
+    LivellaMobile * liv = livellaMobile_init(x, y, dist, perc, h1, h2, h3);
+
+    infile >> liv->dati_livella.largbase;
+    infile >> liv->dati_livella.largtesta;
+    infile >> liv->dati_livella.lunghezza;
+
+    livella_destroy(liv->livella);
+    liv_inizializzalivella( liv );
+
+    return liv;
+
+}
 
 
 
