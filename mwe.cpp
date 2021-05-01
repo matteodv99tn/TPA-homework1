@@ -1,12 +1,13 @@
 #include <iostream>
 #include "libreries/guida.h"
+#include "libreries/livellaMobile.h"
 
 using namespace std;
 
 int main() {
 
     GuidaPrismatica * myguida;
-
+    cout << "+-+-+ Device: guida prismatica +-+-+" << endl;
     cout << endl << "Creo una guida posta al centro del piano da disegno, ossia le coordiante (x,y) = (400,300). " << endl;
     cout << "Il sistema ha una lunghezza di 500 unita' dal centro di una cerniera al centro dell'altra." << endl;
     cout << "La guida è posta, compatibilemente con la geometria del problema, ad una distanza di 100 unita' dalla cerniera a sinsitra." << endl;
@@ -37,6 +38,23 @@ int main() {
     cout << endl << "Salvo la versione modificata nel file \"mwe_result2.svg\"." << endl;
     guida_to_SVG ( myguida, "../output/mwe_result2");
 
-    cout << endl << "Terminato il programma è necessario distruggere correttamente la struttura istanziata tramite l'apposita funzione." << endl << endl;
+    cout << endl << "Quando si finisce di lavorare con la guida prismatica è necessario eliminarla utilizzando l'apposita funzione \"distruggi\"." << endl << endl;
     guida_distruggi( myguida );
+
+
+    
+    cout << "+-+-+ Machine: livella mobile +-+-+" << endl;
+    
+    LivellaMobile * mylivella = livellaMobile_init(400, 500, 300, 25, 200, 30, 100);
+    cout << "Inizializzo una livella mobile il cui centro dei supporti è posto nel punto (400,500);" << endl;
+    cout << "la distanza tra i centri delle guide prismatiche (e dei pistoni) è pari a 300;" << endl;
+    cout << "le guide prismatiche sono poste al 25% della loro corsa utile;" << endl;
+    cout << "l'altezza del corpo dei cilindri è pari a 200, il cilindro a sinistra si estende di 30 mentre quello di destra di 100." << endl << endl;
+
+    cout << "Salvo la versione modificata nel file \"mwe_machine1.svg\"" << endl << endl;
+    livellaMobile_to_svg( mylivella , "../output/mwe_machine1");
+
+    cout << "E' necessario ora distruggere opportunamente l'istanza tramite l'opportuna funzione." << endl;
+    livellaMobile_destroy( mylivella );
+
 }

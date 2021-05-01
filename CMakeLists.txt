@@ -17,7 +17,10 @@ target_link_libraries(mainDevice)
 add_executable(mwe mwe.cpp)
 target_include_directories(mwe PRIVATE libraries)
 # Class A is not a library: its source file needs to be included in the target sources
-target_sources(mwe PRIVATE libreries/guida.cpp)
+target_sources(mwe PRIVATE libreries/guida.cpp
+                        libreries/livellaMobile.cpp
+                        libreries/external/Livella.cpp
+                        libreries/external/sistemaAstePerno.cpp)
 target_link_libraries(mwe)
 
 # EXECUTABLE SECTION
