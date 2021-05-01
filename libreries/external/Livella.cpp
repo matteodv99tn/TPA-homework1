@@ -37,20 +37,20 @@ Livella * livella_from_console(){
      cout << "Inserire lunghezza della piastra:";
      cin >> lung;
 
-    return livella_init(posx1, posx2, posy, larg1, larg2, alt1, altS, altD, spess, lung);
+    return livella_init(posx1, posx2, posy, alt1, larg1, larg2, altS, altD, spess, lung);
     
 }
 
 
 // Inizializzazione dei parametri del device
-Livella * livella_init(float posx1, float posx2, float posy, float larg1, float larg2, float alt1, float altS, float altD, float spess, float lung){
+Livella * livella_init(float posx1, float posx2, float posy, float alt1, float larg1, float larg2, float altS, float altD, float spess, float lung){
 
     Livella * new_livella = new Livella;
 
     new_livella -> mypiston1 = piston_init(posx1, posy, alt1, larg1, altS, larg2);
     new_livella -> mypiston2 = piston_init(posx2, posy, alt1, larg1, altD, larg2);
     new_livella -> myplate = plate_init(spess, lung, posx1, posx2, posy, alt1, larg1, altS, altD, larg2);
-
+    
     return new_livella;
 }
 
@@ -78,7 +78,6 @@ Piston* piston_init (float posx, float posy, float alt1, float larg1, float alt2
     pistonC->pos_cy = pistonC->pos_y1 - pistonC->alt_2;
 
     return pistonC;
-
 }
 
 
@@ -107,7 +106,6 @@ Plate* plate_init (float spess, float lungh, float posx1, float posx2, float pos
 
 
 // Funzione che permette di cambiare la posizione del secondo pistone.
-
 void piston_set_pos(Livella * mylivella, float new_param) {  
     mylivella->mypiston2->pos_x1 = new_param;
     mylivella->mypiston2->pos_x2 = mylivella->mypiston2->pos_x1 + ((mylivella->mypiston2->larg_1 - mylivella->mypiston2->larg_2)/2);
@@ -117,14 +115,12 @@ void piston_set_pos(Livella * mylivella, float new_param) {
 }
 
 // Funzione che permette di cambiare l'altezza dei cilindri esterni.
-
 void piston_set_alt(Livella * mylivella, float new_param) { 
     mylivella->mypiston1->alt_1 = new_param;
     mylivella->mypiston2->alt_1 = new_param;
 }
 
 // Funzione che permette di cambiare la larghezza dei cilindri esterni.
-
 void piston_set_larg1(Livella * mylivella, float new_param) { 
     mylivella->mypiston1->larg_1 = new_param;
     mylivella->mypiston2->larg_1 = new_param;
@@ -139,7 +135,6 @@ void piston_set_larg1(Livella * mylivella, float new_param) {
 }
 
 // Funzione che permette di cambiare l'estensione del primo pistone.
-
 void piston_set_alt1(Livella * mylivella, float new_param) { 
     mylivella->mypiston1->alt_2 = new_param;
     mylivella->mypiston1->pos_y2 = mylivella->mypiston1->pos_y1 - mylivella->mypiston1->alt_2;
@@ -150,7 +145,6 @@ void piston_set_alt1(Livella * mylivella, float new_param) {
 }
 
 // Funzione che permette di cambiare l'estensione del secondo pistone.
-
 void piston_set_alt2(Livella * mylivella, float new_param) { 
     mylivella->mypiston2->alt_2 = new_param;
     mylivella->mypiston2->pos_y2 = mylivella->mypiston2->pos_y1 - mylivella->mypiston2->alt_2;
@@ -160,7 +154,6 @@ void piston_set_alt2(Livella * mylivella, float new_param) {
 }
 
 // Funzione che permette di cambiare la larghezza dei due cilindri interni.
-
 void piston_set_larg2(Livella * mylivella, float new_param) { 
     mylivella->mypiston1->larg_2 = new_param;
     mylivella->mypiston2->larg_2 = new_param;
@@ -171,14 +164,12 @@ void piston_set_larg2(Livella * mylivella, float new_param) {
 }
 
 // Funzione che permette di cambiare lo spessore della piastra.
-
 void plate_set_spessore(Livella * mylivella, float new_param) { 
     mylivella->myplate->spessore = new_param;
     mylivella->myplate->pos_y = mylivella->myplate->pos_cyS - (mylivella->myplate->spessore / 2);
 }
 
 // Funzione che permette di cambiare la lunghezza della piastra.
-
 void plate_set_lunghezza(Livella * mylivella, float new_param) { 
     mylivella->myplate->lunghezza = new_param;
 }
@@ -188,104 +179,90 @@ void plate_set_lunghezza(Livella * mylivella, float new_param) {
 
 int param_control(Livella * mylivella) {
     
-    int n = 0;
-
     float new_param;
 
-    if (mylivella->mypiston1->alt_1 <= 0) {
+    while (mylivella->mypiston1->alt_1 <= 0) {
         cout << "Altezza del cilindro esterno non valida, inserire un valore positivo: ";
         cin >> new_param;
-        n = 1;
         piston_set_alt(mylivella, new_param);  
     }
-    if (mylivella->mypiston1->larg_1 <= 0) {
+    while (mylivella->mypiston1->larg_1 <= 0) {
         cout << "Larghezza del cilindro esterno non valida, inserire un valore positivo: ";
         cin >> new_param;
-        n = 1; 
         piston_set_larg1(mylivella, new_param);
     }
-    if (mylivella->mypiston1->alt_2 <= 0) {
+    while (mylivella->mypiston1->alt_2 <= 0) {
         cout << "Estensione del primo cilindro non valida, inserire un valore positivo: ";
         cin >> new_param;
-        n = 1;
         piston_set_alt1(mylivella, new_param);  
     }
-    if (mylivella->mypiston2->alt_2 <= 0) {
+    while (mylivella->mypiston2->alt_2 <= 0) {
         cout << "Estensione del secondo cilindro non valida, inserire un valore positivo: ";
         cin >> new_param;
-        n = 1;
         piston_set_alt2(mylivella, new_param);  
     }
-    if (mylivella->mypiston1->larg_2 <= 0) {
+    while (mylivella->mypiston1->larg_2 <= 0) {
         cout << "Larghezza del cilindro interno non valida, inserire un valore positivo: ";
         cin >> new_param;
-        n = 1;
         piston_set_larg2(mylivella, new_param);
     }
-    if (mylivella->myplate->spessore <= 0) {
+    while (mylivella->myplate->spessore <= 0) {
         cout << "Spessore della piastra non valido, inserire un valore positivo: ";
         cin >> new_param;
-        n = 1;
         plate_set_spessore(mylivella, new_param);
     }
-    if (mylivella->myplate->lunghezza <= 0) {
+    while (mylivella->myplate->lunghezza <= 0) {
         cout << "Lunghezza della piastra non valida, inserire un valore positivo: ";
         cin >> new_param;
-        n = 1;
         plate_set_lunghezza(mylivella, new_param);
     }
-
-    return n;
-
 }
 
 
-// Controllo della coerenza dei parametri inseriti
+
+
+// Controllo della coerenza tra i parametri inseriti
 
 int device_control(Livella * mylivella) {
 
-    int n = 0;
-
     float new_param;
 
-    if (mylivella->mypiston2->pos_x1 <= (mylivella->mypiston1->pos_x1 + mylivella->mypiston1->larg_1)) {
+    while (mylivella->mypiston2->pos_x1 <= (mylivella->mypiston1->pos_x1 + mylivella->mypiston1->larg_1)) {
         cout << "Distanza tra i pistoni non sufficientemente grande, reinserire la coordinata x del secondo pistone: ";
         cin >> new_param;
-        n = 1;
         piston_set_pos(mylivella, new_param);
+        param_control(mylivella);
     }
-    if (mylivella->mypiston1->larg_1 <= mylivella->mypiston1->larg_2) {
+    while (mylivella->mypiston1->larg_1 <= mylivella->mypiston1->larg_2) {
         cout << "La larghezza del cilindro interno deve essere minore di quella del cilindro esterno, reinserire la larghezza del cilindro interno: ";
         cin >> new_param;
-        n = 1;
         piston_set_larg2(mylivella, new_param);
+        param_control(mylivella);
     }
-    if (mylivella->mypiston1->alt_2 > mylivella->mypiston1->alt_1) {
+    while (mylivella->mypiston1->alt_2 > mylivella->mypiston1->alt_1) {
         cout << "L'estensione del pistone non può essere maggiore della lunghezza del cilindro esterno, reinserire l'estensione del pistone di sinistra: ";
         cin >> new_param;
-        n = 1;
         piston_set_alt1(mylivella, new_param);
+        param_control(mylivella);
     }
-    if (mylivella->mypiston2->alt_2 > mylivella->mypiston2->alt_1) {
+    while (mylivella->mypiston2->alt_2 > mylivella->mypiston2->alt_1) {
         cout << "L'estensione del pistone non può essere maggiore della lunghezza del cilindro esterno, reinserire l'estensione del pistone di destra: ";
         cin >> new_param;
-        n = 1;
         piston_set_alt2(mylivella, new_param);
+        param_control(mylivella);
     }
-    if (mylivella->myplate->spessore >= mylivella->mypiston1->alt_1) {
+    while (mylivella->myplate->spessore >= mylivella->mypiston1->alt_1) {
         cout << "Lo spessore della piastra non deve eccedere l'altezza del cilindro esterno: ";
         cin >> new_param;
-        n = 1;
         plate_set_spessore(mylivella, new_param);
+        param_control(mylivella);
     }
-    if (mylivella->myplate->lunghezza < (mylivella->mypiston2->pos_x1 - mylivella->mypiston1->pos_x1 - mylivella->mypiston1->larg_1)) {
+    while (mylivella->myplate->lunghezza < (mylivella->mypiston2->pos_x1 - mylivella->mypiston1->pos_x1 - mylivella->mypiston1->larg_1)) {
         cout << "La lunghezza della piastra non può essere inferiore alla distanza degli estremi dei due cilindri: ";
         cin >> new_param;
-        n = 1;
         plate_set_lunghezza(mylivella, new_param);
+        param_control(mylivella);
     }
-
-    return n;
 }
 
 
