@@ -95,10 +95,17 @@ Ogni funzione implementata richiede come primo parametro un puntatore ad una str
 - `guida_set_angolo` permette di impostare l'angolo di inclinazione alpha della struttura rispetto all'orizzontale; l'angolo deve essere espresso in gradi
 - `guida_set_cerniera` e `guida_set_guida` permettono di modificare gli attributi associati ai rettangoli rispettivamente della cerniera o della guida che scorre sul cilindro; come parametri in ingresso è necessario introdurre le nuove dimensioni orizzontali e verticali e opzionalmente le coordinate RGB (tra 0 e 255) dei tre canali rosso, verde e blu 
 
-### Funzioni `guida_parse_svg`
+### Funzione `guida_parse_svg`
 Questa funzione permette di effettuare il _parsing_ di un codice SVG di una guida prismatica; in particolare la funzione presenta come parametri in ingresso:
 - una stringa `file_name` contenente il nome, senza estensione, del file svg del quale si vuole effettuare il parsing;
 - un booleano `with_header` che permette di specificare se il file che si vuole scansionare presenta (o meno) l'header svg;
 - opzionalmente è possibile inserire un valore intero `pos` associato al numero della riga alla quale dovrebbe partire il codice di una guida prismatica all'interno di un svg qualsiasi. Se specificato tale valore, esso sovrascrive l'opzione booleana `with_header`.
 
 La funzione restituisce un puntatore alla guida prismatica del quale è stato effettuato il parse.
+
+### Funzione `guida_verifica_uguaglianza`
+Funzione che permette di stabilire sue due punatori a strutture `GuidaPrismatica` sono coincidenti e dunque rappresentano la stessa entità; i parametri in ingresso sono
+- due puntatori `g1` e `g2` ad una struttura di tipo `GuidaPrismatica` delle quale si vuole effettuare il confronto;
+- opzionalmente è possibile includere un valore booleano `controlla_colore` che permette di specificare se, nel controllo, confrontare anche i colori di guida e incastri; di default il valore è negativo, e dunque nessun controllo sul colore viene effettuato.
+
+Il risultato della funzione è un valore booleano falso se le due strutture sono diverse, mentre il risultato è vero se le due strutture risultano essere uguali.

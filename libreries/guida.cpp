@@ -914,3 +914,41 @@ float input(){
 	}
     return tmp;
 }
+
+
+bool guida_verifica_uguaglianza(GuidaPrismatica * g1, GuidaPrismatica * g2, bool controlla_colore){
+
+    // Controllo su lunghezza, corsa e spessore
+    if( g1->lunghezza != g2->lunghezza ) return false;
+    if( g1->corsa != g2->corsa ) return false;
+    if( g1->spessore != g2->spessore ) return false;
+
+    // Controllo sulla posizione
+    if( g1->pos_x != g2->pos_x ) return false;
+    if( g1->pos_y != g2->pos_y ) return false;
+    if( g1->alpha != g2->alpha ) return false;
+
+    // Controllo sulle proprietà delle cerniere
+    if( g1->incastri->dim_x != g2->incastri->dim_x  ) return false;
+    if( g1->incastri->dim_y != g2->incastri->dim_y ) return false;
+
+    // Controllo sulle proprietà delle cerniere
+    if( g1->guida->dim_x != g2->guida->dim_x  ) return false;
+    if( g1->guida->dim_y != g2->guida->dim_y ) return false;
+
+    // Controllo sui colori
+    if( controlla_colore ){
+
+        if( g1->incastri->colore[0] != g2->incastri->colore[0]  ) return false;
+        if( g1->incastri->colore[1] != g2->incastri->colore[1]  ) return false;
+        if( g1->incastri->colore[2] != g2->incastri->colore[2]  ) return false;
+
+        if( g1->guida->colore[0] != g2->guida->colore[0]  ) return false;
+        if( g1->guida->colore[1] != g2->guida->colore[1]  ) return false;
+        if( g1->guida->colore[2] != g2->guida->colore[2]  ) return false;
+
+
+    }
+
+    return true;
+}

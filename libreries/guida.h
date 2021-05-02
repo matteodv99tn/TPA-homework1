@@ -238,10 +238,22 @@
      */
     GuidaPrismatica * guida_carica_file( std::string nome_file );
 
+    /*
+     * Funzione che permette di verificare se due istanze GuidaPrismatica sono uguali
+     * 
+     * @param g1: puntatore alla prima guida prismatica da confrontare
+     * @param g2: puntatore alla seconda guida prismatica da confrontare
+     * @param controlla_colore: valore booleano che permette di controllare anche la corrispondenza tra i colori di due guide prismatiche;
+     *                      di default il valore è falso
+     * 
+     */
+    bool guida_verifica_uguaglianza(GuidaPrismatica * g1, GuidaPrismatica * g2, bool controlla_colore = false);
+
     /**
     /*  Funzione per input di float,
     /*  ritorna il valore inserito da tastiera 
     */
     float input();
+    
 
 #endif
