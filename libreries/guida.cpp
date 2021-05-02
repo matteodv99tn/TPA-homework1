@@ -812,7 +812,7 @@ vector <float> guida_parse_pos( string str){
     return res;
 }
 
-GuidaPrismatica * guida_parse_svg(string file_name, bool with_header, int pos = -1){
+GuidaPrismatica * guida_parse_svg(string file_name, bool with_header, int pos){
 
     int tobesummed = 0;
     GuidaPrismatica * guida = new GuidaPrismatica;

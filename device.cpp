@@ -7,12 +7,18 @@ int main() {
 
     GuidaPrismatica * myguida;
 
-    myguida = guida_init(400, 300, 400, 130, 40, 60);
+    myguida = guida_crea();
 
-    guida_to_SVG(myguida, "test", false);
+    guida_visualizza_info( myguida );
 
-    GuidaPrismatica * g = guida_parse_svg("test", true);
-    guida:guida_visualizza_info( g );
+    cout << endl << "Salvo il risultato della guida prismatica in \"guidaprismatica.svg\"." << endl << endl;
+    guida_to_SVG(myguida, "guidaprismatica", false);
+
+    cout << "Faccio il parsing della guida prismatica e ne visualizzo i dati: " << endl;
+    GuidaPrismatica * g = guida_parse_svg("guidaprismatica", true);
+    guida_visualizza_info( g );
+    if( guida_verifica_uguaglianza(myguida, g, true) ) cout << "Le due guide sono uguali!" << endl;
+    else cout << "Le due guide sono diverse" << endl;
 
     guida_distruggi( g );
     guida_distruggi( myguida );
