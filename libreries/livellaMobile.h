@@ -140,4 +140,15 @@
      */
     LivellaMobile * livellaMobile_da_file(std::string nome_file);
 
+    /*
+     * Funzione che permette di verificare l'uguaglianza tra due livelle mobili:
+     * 
+     * @param l1: puntatore alla prima livella mobile da comparare
+     * @param l2: puntatore alla seconda livella mobile da comparare
+     * 
+     * @return valore booleano affermativo se le due istanze presentano valori uguali, valore falso altrimenti
+     * 
+     */
+    bool livellaMobile_verifica_uguaglianza( LivellaMobile * l1, LivellaMobile * l2 );
+
 #endif

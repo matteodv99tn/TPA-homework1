@@ -52,3 +52,8 @@ Funzione che permette di salvare su un file di testo le proprietà fondamentali 
 
 ### `livellaMobile_da_file` 
 Funzione che permette di generare una livella mobile leggendo le informazioni della stessa da file; in particolare il parametro della funzione è una stringa `nome_file` che contiene il nome del file di testo, senza estensione, dal quale reperire le informazioni. La funzione restituisce un puntatore alla struttura `LivellaMobile` caricata.
+
+### `livellaMobile_verifica_uguaglianza`
+Funzione che permette di controllare su due puntatori a `LivellaMobile` contengono le stesse informazioni, rappresentando dunque la stessa livella mobile; come parametri in ingresso è necessario specificare le due livelle mobili `l1` ed `l2` che si vogliono confrontare.
+
+La funzione restituisce un valore booleano vero se verifica che le due strutture presentano le stesse informazioni, un valore falso altrimenti.

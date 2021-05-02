@@ -298,7 +298,32 @@ LivellaMobile * livellaMobile_da_file(std::string nome_file){
 
 }
 
+bool livellaMobile_verifica_uguaglianza( LivellaMobile * l1, LivellaMobile * l2 ){
 
+    // Controllo sugli attributi delle livelle mobili:
+    if( l1->distanza != l2->distanza ) return false;
+    if( l1->perc_corsa != l2->perc_corsa ) return false;
+    if( l1->pos_x != l2->pos_x ) return false;
+    if( l1->pos_y != l2->pos_y ) return false;
+
+    // Controllo sulle guide prismatiche delle livelle
+    if ( !guida_verifica_uguaglianza(l1->supporto[0], l2->supporto[0]) ) return false;
+    if ( !guida_verifica_uguaglianza(l1->supporto[1], l2->supporto[1]) ) return false;
+    
+    // Controllo sulle informazioni della livella
+    if( l1->dati_livella.posx1 != l2->dati_livella.posx1 ) return false;
+    if( l1->dati_livella.posx2 != l2->dati_livella.posx2 ) return false;
+    if( l1->dati_livella.posy != l2->dati_livella.posy ) return false;
+    if( l1->dati_livella.alt_cilindro != l2->dati_livella.alt_cilindro ) return false;
+    if( l1->dati_livella.alt_dx != l2->dati_livella.alt_dx ) return false;
+    if( l1->dati_livella.alt_sx != l2->dati_livella.alt_sx ) return false;
+    if( l1->dati_livella.largbase != l2->dati_livella.largbase ) return false;
+    if( l1->dati_livella.largtesta != l2->dati_livella.largtesta ) return false;
+    if( l1->dati_livella.spessore != l2->dati_livella.spessore ) return false;
+    if( l1->dati_livella.lunghezza != l2->dati_livella.lunghezza ) return false;
+
+    return true;
+}
 
 
 
