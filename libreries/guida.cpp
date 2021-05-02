@@ -792,6 +792,11 @@ vector <float> guida_parse_pos( string str){
     int pos = str.find("matrix(");
     pos += 7;
 
+    while( str[pos] != ')' ){
+        temp += str[pos];
+        pos++;
+    }
+
     istringstream istr(temp);
     
     istr >> t >> t;
@@ -807,7 +812,7 @@ vector <float> guida_parse_pos( string str){
     return res;
 }
 
-GuidaPrismatica * guida_parse_svg(string file_name, bool with_header){
+GuidaPrismatica * guida_parse_svg(string file_name, bool with_header, int pos = -1){
 
     int tobesummed = 0;
     GuidaPrismatica * guida = new GuidaPrismatica;
@@ -824,6 +829,8 @@ GuidaPrismatica * guida_parse_svg(string file_name, bool with_header){
     svgfile.close();
 
     if(with_header) tobesummed = 3;
+    
+    if(pos != -1 ) tobesummed = pos - 1;
 
     guida->lunghezza = guida_val_dopo_str( svglines[0 + tobesummed], "width=\"" );
     guida->spessore = guida_val_dopo_str( svglines[0 + tobesummed], "height=\"" );

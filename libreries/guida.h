@@ -210,7 +210,17 @@
      */
     void guida_to_SVG( GuidaPrismatica * guida , std::string nome_file, bool visualizza_dimensioni = false );
 
-    GuidaPrismatica * guida_parse_svg(std::string file_name, bool with_header);
+    /*
+     * Funzione che permette di effettuare il parsing di un codice svg di guida prismatica
+     *
+     * @param file_name: nome del file, senza estensione, da leggere e del quale effettuare il parsing;
+     * @param with_header: valore booleano che permette di capire se si vuole effettuare il parsing di una guida prismatica che presente un header (o meno)
+     * @param pos: questo sovrascrive eventualmente il valore di with_header e permette di specificare da che linea di file SVG dovrebbe essere presente una guida prismatica della quale effetuare il parse
+     * 
+     * @return un puntatore a GuidaPrismatica associata alla guida ottenuta dal parsing
+     *  
+     */
+    GuidaPrismatica * guida_parse_svg(std::string file_name, bool with_header, int pos = -1);
 
     /*
      * Funzione che permette il salvataggio di una guida in un file di testo .txt
