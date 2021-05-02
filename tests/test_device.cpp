@@ -95,10 +95,28 @@ TEST_CASE("Controllo che l'operazione di salvataggio/caricamento non perda infor
     guida_salva_file( guida, "test_guida");
     
     GuidaPrismatica * copia = guida_carica_file("test_guida");
+    GuidaPrismatica * copia2 = guida_carica_file("test_guida_2");
 
     REQUIRE( guida_verifica_uguaglianza(guida, copia) == true );
+    REQUIRE( copia2 == NULL );
 
     guida_distruggi( guida );
     guida_distruggi( copia );
 
 }
+
+TEST_CASE("Controllo che il parsing di una guida prismatica sia corretto", "[GuidaPrismatica][parsing]"){
+
+    GuidaPrismatica * guida = guida_init (100, 100, 500, 120, 90, 90);
+    
+    guida_to_SVG( guida, "test_guida");
+
+    GuidaPrismatica * parsed = guida_parse_svg( "test_guida", true);
+
+    REQUIRE( guida_verifica_uguaglianza(guida, parsed, false) == true );
+
+    guida_distruggi( guida );
+    guida_distruggi( parsed );
+
+}   
+

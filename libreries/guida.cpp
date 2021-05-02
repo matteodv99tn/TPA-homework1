@@ -883,6 +883,10 @@ GuidaPrismatica * guida_carica_file( string nome_file ){
 
     ifstream infile( nome_file + ".txt");
 
+    if( infile.fail() ) return NULL;
+
+    cout << "nessun errore" << endl;
+
     GuidaPrismatica * guida = new GuidaPrismatica;
     guida->incastri = new GRect;
     guida->guida = new GRect;
