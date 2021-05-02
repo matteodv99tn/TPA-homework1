@@ -855,7 +855,8 @@ GuidaPrismatica * guida_parse_svg(string file_name, bool with_header, int pos){
 
 
     float temp = guida_val_dopo_str(svglines[3 + tobesummed], "x = \"" );
-    guida->corsa = guida->lunghezza / 2 - guida->guida->dim_x / 2 - temp;
+    temp += guida->guida->dim_x / 2;
+    guida->corsa = guida->lunghezza / 2 + temp;
 
     vector <float> coord = guida_parse_pos(svglines[3 + tobesummed]);
     guida->alpha = coord[0];
@@ -882,6 +883,8 @@ void guida_salva_file ( GuidaPrismatica * guida, string nome_file ){
 GuidaPrismatica * guida_carica_file( string nome_file ){
 
     ifstream infile( nome_file + ".txt");
+
+    if( infile.fail() ) return NULL;
 
     GuidaPrismatica * guida = new GuidaPrismatica;
     guida->incastri = new GRect;
