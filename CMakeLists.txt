@@ -29,15 +29,18 @@ target_include_directories(machine PRIVATE libraries)
 # Class A is not a library: its source file needs to be included in the target sources
 target_sources(machine PRIVATE libreries/guida.cpp
                               libreries/livellaMobile.cpp
-                              libreries/external/Livella.cpp
-                              libreries/external/sistemaAstePerno.cpp)
+                              libreries/external/Livella.cpp)
 target_link_libraries(machine)
 
 # EXECUTABLE SECTION
-add_executable(testCases tests/test_device.cpp)
+add_executable(testCases tests/test_device.cpp
+                           tests/test_machine.cpp)
 target_include_directories(testCases PRIVATE ../libraries)
 # Class A is not a library: its source file needs to be included in the target sources
-target_sources(testCases PRIVATE libreries/guida.cpp)
+target_sources(testCases PRIVATE libreries/guida.cpp
+                              libreries/livellaMobile.cpp
+                              libreries/external/Livella.cpp
+                              libreries/external/sistemaAstePerno.cpp)
 target_link_libraries(testCases)
 
 # TESTS SECTION

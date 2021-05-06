@@ -93,13 +93,15 @@ LivellaMobile * livellaMobile_init(float posx, float posy, float dist, float per
     livella->pos_x = posx;
     livella->pos_y = posy;
 
+    if(perc < 0 || perc > 100) perc = 20;
+
     livella->distanza = dist;
     livella->perc_corsa = perc;
 
     livella->supporto[0] = guida_init(
             0,
             livella->pos_y,
-            livella->distanza - GUIDA_DIMX / 2 - GUIDA_DIST_REL / 2,
+            2 * (livella->distanza / 2 - GUIDA_DIMX / 2 - GUIDA_DIST_REL / 2),
             0,
             GUIDA_DIMX,
             GUIDA_DIMY 
@@ -108,7 +110,7 @@ LivellaMobile * livellaMobile_init(float posx, float posy, float dist, float per
     livella->supporto[1] = guida_init(
             0,
             livella->pos_y,
-            livella->distanza - GUIDA_DIMX / 2 - GUIDA_DIST_REL / 2,
+            2 * (livella->distanza / 2 - GUIDA_DIMX / 2 - GUIDA_DIST_REL / 2),
             0,
             GUIDA_DIMX,
             GUIDA_DIMY 
