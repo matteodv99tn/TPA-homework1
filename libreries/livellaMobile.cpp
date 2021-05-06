@@ -285,9 +285,14 @@ LivellaMobile * livellaMobile_da_file(std::string nome_file){
         return NULL;
     }
 
+
     infile >> x >> y >> dist >> perc >> h1 >> h2 >> h3;
 
     LivellaMobile * liv = livellaMobile_init(x, y, dist, perc, h1, h2, h3);
+
+    liv->dati_livella.alt_cilindro = h1;
+    liv->dati_livella.alt_sx = h2;
+    liv->dati_livella.alt_dx = h3;
 
     infile >> liv->dati_livella.largbase;
     infile >> liv->dati_livella.largtesta;
