@@ -10,34 +10,34 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(mainDevice device.cpp)
 target_include_directories(mainDevice PRIVATE libraries)
 # Class A is not a library: its source file needs to be included in the target sources
-target_sources(mainDevice PRIVATE libreries/guida.cpp)
+target_sources(mainDevice PRIVATE libraries/guida.cpp)
 target_link_libraries(mainDevice)
 
 # EXECUTABLE SECTION
 add_executable(mwe mwe.cpp)
 target_include_directories(mwe PRIVATE libraries)
 # Class A is not a library: its source file needs to be included in the target sources
-target_sources(mwe PRIVATE libreries/guida.cpp
-                        libreries/livellaMobile.cpp
-                        libreries/external/Livella.cpp
-                        libreries/external/sistemaAstePerno.cpp)
+target_sources(mwe PRIVATE libraries/guida.cpp
+                        libraries/livellaMobile.cpp
+                        libraries/external/Livella.cpp
+                        libraries/external/sistemaAstePerno.cpp)
 target_link_libraries(mwe)
 
 # EXECUTABLE SECTION
 add_executable(machine machine.cpp)
 target_include_directories(machine PRIVATE libraries)
 # Class A is not a library: its source file needs to be included in the target sources
-target_sources(machine PRIVATE libreries/guida.cpp
-                              libreries/livellaMobile.cpp
-                              libreries/external/Livella.cpp
-                              libreries/external/sistemaAstePerno.cpp)
+target_sources(machine PRIVATE libraries/guida.cpp
+                              libraries/livellaMobile.cpp
+                              libraries/external/Livella.cpp
+                              libraries/external/sistemaAstePerno.cpp)
 target_link_libraries(machine)
 
 # EXECUTABLE SECTION
 add_executable(testCases tests/test_device.cpp)
 target_include_directories(testCases PRIVATE ../libraries)
 # Class A is not a library: its source file needs to be included in the target sources
-target_sources(testCases PRIVATE libreries/guida.cpp)
+target_sources(testCases PRIVATE libraries/guida.cpp)
 target_link_libraries(testCases)
 
 # TESTS SECTION
