@@ -7,38 +7,18 @@ set(CMAKE_CXX_STANDARD 17)
 
 
 # EXECUTABLE SECTION
-add_executable(mainDevice device.cpp)
-target_include_directories(mainDevice PRIVATE libraries)
+add_executable(main main.cpp)
+target_include_directories(main PRIVATE lib)
 # Class A is not a library: its source file needs to be included in the target sources
-target_sources(mainDevice PRIVATE libraries/guida.cpp)
-target_link_libraries(mainDevice)
+target_sources(main PRIVATE src/guida.cpp)
+target_link_libraries(main)
 
 # EXECUTABLE SECTION
-add_executable(mwe mwe.cpp)
-target_include_directories(mwe PRIVATE libraries)
+add_executable(test-device tests/test-guida.cpp)
+target_include_directories(test-device PRIVATE lib)
 # Class A is not a library: its source file needs to be included in the target sources
-target_sources(mwe PRIVATE libraries/guida.cpp
-                        libraries/livellaMobile.cpp
-                        libraries/external/Livella.cpp
-                        libraries/external/sistemaAstePerno.cpp)
-target_link_libraries(mwe)
-
-# EXECUTABLE SECTION
-add_executable(machine machine.cpp)
-target_include_directories(machine PRIVATE libraries)
-# Class A is not a library: its source file needs to be included in the target sources
-target_sources(machine PRIVATE libraries/guida.cpp
-                              libraries/livellaMobile.cpp
-                              libraries/external/Livella.cpp
-                              libraries/external/sistemaAstePerno.cpp)
-target_link_libraries(machine)
-
-# EXECUTABLE SECTION
-add_executable(testCases tests/test_device.cpp)
-target_include_directories(testCases PRIVATE ../libraries)
-# Class A is not a library: its source file needs to be included in the target sources
-target_sources(testCases PRIVATE libraries/guida.cpp)
-target_link_libraries(testCases)
+target_sources(test-device PRIVATE src/guida.cpp)
+target_link_libraries(test-device)
 
 # TESTS SECTION
 # Basically makes CMake read the CMakeLists.txt file contained in tests
