@@ -25,6 +25,8 @@ namespace matteodv99tn{
             // Constructors:
             Rectangle(float x, float y, float w, float h);
             Rectangle(float x, float y, float w, float h, int * col);
+            Rectangle(const Rectangle &other);
+            Rectangle(Rectangle &other);
 
             // Destructor:
             ~Rectangle();
@@ -43,6 +45,35 @@ namespace matteodv99tn{
             // Other function
             string svg_code(string transform_string) const;
 
+
+    };
+
+    class PrismaticJoint{
+
+        private: 
+
+            // Private class attributes
+            float pos_x;
+            float pos_y;
+
+            float stroke;
+            float length;
+            float thickness;
+
+            Rectangle * support[2];
+            Rectangle * prism;
+            Rectangle * cylinder;
+
+            // Private functions
+            void define_positions();
+
+        public:
+
+            // Constructors 
+            PrismaticJoint(float x, float y, float len, float str);
+
+            // Destructor
+            ~PrismaticJoint();
 
     };
 
