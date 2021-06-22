@@ -86,6 +86,12 @@ namespace matteodv99tn{
             // Destructor
             ~PrismaticJoint();
 
+            // Getter and setter function
+            void set_support_dimension(const float w, const float h);
+            void set_prism_dimension(const float w, const float h);
+            void set_stroke(const float str);
+            void set_length(const float l);
+
             // Other functions
             vector<string> to_svg() const;
             void to_svg(const string file_name) const;

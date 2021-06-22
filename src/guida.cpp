@@ -195,14 +195,11 @@ PrismaticJoint::PrismaticJoint(float x, float y, float len, float str) {
 
     LOG("PrismaticJoint constructor called")
 
-    if( len < 0 ) throw std::out_of_range("Cannot create a prismatic joint with a negative length!");
-    if( str < 0 || str > 100) throw std::out_of_range("Cannot create a prismatic joint with stroke percentage out of the range [0,100] (inserted " + std::to_string(str) + ")");
+    this->set_length(len);
+    this->set_stroke(str);
 
     this->pos_x = x;
     this->pos_y = y;
-
-    this->length = len;
-    this->stroke = str;
 
     this->prism = new Rectangle( 0, 0, DEF_PRISM_WIDTH < 2 * len ? DEF_PRISM_WIDTH : len / 2, DEF_PRISM_HEIGHT );
     this->support[0] = new Rectangle(*this->prism);
@@ -234,8 +231,6 @@ PrismaticJoint::PrismaticJoint(const string file_name, const int index){
         svg_lines.push_back(str);
     }
 
-    LOG("Searching for the correct prismatic joint")
-
     int joint_found = 0;
     int joint_position;
     for(int i = 0; i < svg_lines.size(); i++){
@@ -251,7 +246,8 @@ PrismaticJoint::PrismaticJoint(const string file_name, const int index){
         
     }
 
-    if(joint_found < index ) throw std::out_of_range("In " + file_name + ".svg there are less prismati joint (" + std::to_string(joint_found + 1) + ") than the required index (" + std::to_string(index) + ") thus cannot create a PrismaticJoint object.");
+    LOG("comparing " << joint_found << " " << index)
+    if(joint_found < index+1 ) throw std::out_of_range("In " + file_name + ".svg there are less prismatic joint (" + std::to_string(joint_found) + ") than the required index (" + std::to_string(index) + ") thus cannot create a PrismaticJoint object.");
     
     LOG("Correct prismatic Joint found on row " << joint_position);
  
@@ -284,6 +280,39 @@ PrismaticJoint::~PrismaticJoint(){
     delete this->support[0];
     delete this->support[1];
 
+}
+
+void PrismaticJoint::set_support_dimension(float w, float h){
+
+    float max_width = ( this->length - this->prism->get_width() ) / 2;
+    if( w > max_width ) throw std::out_of_range("Collision detected on setting the support width to " + std::to_string(w) + "; maximum value allowed: " + std::to_string(max_width));
+
+    this->support[0]->set_dimensions(w,h);
+
+}
+
+void PrismaticJoint::set_support_dimension(float w, float h){
+
+    float max_width = this->length - this->support[0]->get_width() - this->support[1]->get_width();
+    if( w > max_width ) throw std::out_of_range("Collision detected on setting the prism width to " + std::to_string(w) + "; maximum value allowed: " + std::to_string(max_width));
+
+    this->prism->set_dimensions(w,h);
+
+}
+
+void PrismaticJoint::set_stroke(const float str){
+    
+    if( str < 0 || str > 100) throw std::out_of_range("Cannot create a prismatic joint with stroke percentage out of the range [0,100] (inserted " + std::to_string(str) + ")");
+
+    this->stroke = str;
+}
+
+void PrismaticJoint::set_length(const float l){
+
+    if( l < 0 ) throw std::out_of_range("Cannot create a prismatic joint with a negative length!");
+
+    this->length = l;
+    
 }
 
 vector<string> PrismaticJoint::to_svg() const {

@@ -15,7 +15,7 @@ int main(){
 
     prism.to_svg("example");
     
-    PrismaticJoint fromsvg("example");
+    PrismaticJoint fromsvg("example", 1);
 
     fromsvg.to_svg("example-derived");
 
