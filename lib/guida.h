@@ -2,8 +2,12 @@
 #define _PRISMATIC_JOINT_H_
 
 #include <string>
+#include <vector>
+#include <ostream>
+#include <istream>
 
 using std::string;
+using std::vector;
 
 namespace matteodv99tn{
 
@@ -46,6 +50,11 @@ namespace matteodv99tn{
             string svg_code(string transform_string) const;
 
 
+            // Operator overload
+            friend std::ostream& operator<<(std::ostream& stream, const Rectangle &rect);
+            friend std::istream& operator>>(std::istream& stream, Rectangle &rect);
+
+
     };
 
     class PrismaticJoint{
@@ -66,14 +75,20 @@ namespace matteodv99tn{
 
             // Private functions
             void define_positions();
+            string svg_header() const;
 
         public:
 
             // Constructors 
             PrismaticJoint(float x, float y, float len, float str);
+            PrismaticJoint(const string file_name, const int index = 0);
 
             // Destructor
             ~PrismaticJoint();
+
+            // Other functions
+            vector<string> to_svg() const;
+            void to_svg(const string file_name) const;
 
     };
 

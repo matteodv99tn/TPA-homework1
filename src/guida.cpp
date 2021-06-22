@@ -1,12 +1,20 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
+#include <fstream>
+#include <ostream>
+#include <istream>
 
 #include "guida.h"
 #include "log.h"
 
 using matteodv99tn::Rectangle;
 using matteodv99tn::PrismaticJoint;
+using std::vector;
+using std::string;
+using std::ostream;
+using std::istream;
 using std::endl;
 
 // DEFAULT VALUES
@@ -107,7 +115,7 @@ int* Rectangle::get_colors() const{
     tbr[0] = this->colors[0];
     tbr[1] = this->colors[1];
     tbr[2] = this->colors[2];
-
+    
     return tbr;
 }
 
@@ -132,6 +140,26 @@ string Rectangle::svg_code(string transform_string) const{
     return out.str();
 }
 
+ostream& matteodv99tn::operator<<(ostream &stream, const Rectangle &rect){
+
+    stream << rect.get_width() << " ";
+    stream << rect.get_height() << " ";
+    stream << rect.colors[0] << " ";
+    stream << rect.colors[1] << " ";
+    stream << rect.colors[2];
+
+    return stream;
+
+}
+
+istream& matteodv99tn::operator>>(istream &stream, Rectangle &rect){
+
+    stream >> rect.width >> rect.height;
+    stream >> rect.colors[0] >> rect.colors[1] >> rect.colors[2];
+
+    return stream;
+}
+
 void PrismaticJoint::define_positions(){
 
     this->support[0]->set_relative_position(-this->length / 2, 0);
@@ -143,22 +171,108 @@ void PrismaticJoint::define_positions(){
 
 }
 
+string PrismaticJoint::svg_header()const {
+
+    std::stringstream out;
+
+    out << "<!-- matteodv99tn::PrismaticJoint code, info: ";
+
+    out << this->length << " ";
+    out << this->stroke << " ";
+    out << this->pos_x << " ";
+    out << this->pos_y << " ";
+
+    out << *(this->cylinder) << " ";
+    out << *(this->prism) << " ";
+    out << *(this->support[0]) << " ";
+    
+    out << " -->";
+
+    return out.str();
+}
+
 PrismaticJoint::PrismaticJoint(float x, float y, float len, float str) {
 
     LOG("PrismaticJoint constructor called")
 
-    // TO BE IMPLEMENTED: check on input and relative throws
+    if( len < 0 ) throw std::out_of_range("Cannot create a prismatic joint with a negative length!");
+    if( str < 0 || str > 100) throw std::out_of_range("Cannot create a prismatic joint with stroke percentage out of the range [0,100] (inserted " + std::to_string(str) + ")");
 
     this->pos_x = x;
     this->pos_y = y;
+
+    this->length = len;
+    this->stroke = str;
 
     this->prism = new Rectangle( 0, 0, DEF_PRISM_WIDTH < 2 * len ? DEF_PRISM_WIDTH : len / 2, DEF_PRISM_HEIGHT );
     this->support[0] = new Rectangle(*this->prism);
     this->support[1] = new Rectangle(*this->prism);
     this->cylinder = new Rectangle(0, 0, len, DEF_PRISM_HEIGHT / 2);
 
+    int color_to_set[3] {210,210,210};
+    this->cylinder->set_colors(color_to_set);
+
     this->define_positions();
 
+}
+
+PrismaticJoint::PrismaticJoint(const string file_name, const int index){
+    
+    LOG( "PrismaticJoint parser called" )
+
+    std::ifstream svgfile(file_name + ".svg");
+
+    if( !svgfile.is_open() ) throw std::runtime_error("Couldn't open" + file_name + ".svg thus cannot create a PrismaticJoint object.");
+
+    LOG( "File opened correctly! ");
+
+    vector<string> svg_lines;
+    string str;
+
+    while( svgfile.good() ){
+        std::getline(svgfile, str);
+        svg_lines.push_back(str);
+    }
+
+    LOG("Searching for the correct prismatic joint")
+
+    int joint_found = 0;
+    int joint_position;
+    for(int i = 0; i < svg_lines.size(); i++){
+        
+        if( svg_lines[i].find("matteodv99tn") != string::npos ){
+            
+            joint_position = i;
+
+            if(joint_found == index) i = svg_lines.size();
+
+            joint_found++;
+        }
+        
+    }
+
+    if(joint_found < index ) throw std::out_of_range("In " + file_name + ".svg there are less prismati joint (" + std::to_string(joint_found + 1) + ") than the required index (" + std::to_string(index) + ") thus cannot create a PrismaticJoint object.");
+    
+    LOG("Correct prismatic Joint found on row " << joint_position);
+ 
+    LOG( svg_lines[joint_position].erase( 0, svg_lines[joint_position].find("info:")+6 )  );
+
+    std::istringstream in (svg_lines[joint_position]);
+    float w, h;
+
+    in >> this->length >> this->stroke >> this->pos_x >> this->pos_y;
+
+    this->cylinder = new Rectangle(0,0, 1,1);
+    this->prism = new Rectangle(0,0, 1,1);
+    this->support[0] = new Rectangle(0,0, 1,1);
+
+    in >> *(this->cylinder);
+    in >> *(this->prism);
+    in >> *(this->support[0]);
+
+    this->support[1] = new Rectangle( *(this->support[0]) );
+
+    this->define_positions();
 }
 
 PrismaticJoint::~PrismaticJoint(){
@@ -171,3 +285,42 @@ PrismaticJoint::~PrismaticJoint(){
     delete this->support[1];
 
 }
+
+vector<string> PrismaticJoint::to_svg() const {
+
+    vector<string> tbr;
+
+    std::stringstream trasf;
+    trasf << "transform=\"matrix(1 0 0 1 ";
+    trasf << this->pos_x << " ";
+    trasf << this->pos_y << ")\"";
+
+    tbr.push_back( this->svg_header() );
+    tbr.push_back( this->cylinder->svg_code( trasf.str() ) );
+    tbr.push_back( this->support[0]->svg_code( trasf.str() ) );
+    tbr.push_back( this->support[1]->svg_code( trasf.str() ) );
+    tbr.push_back( this->prism->svg_code( trasf.str() ) );
+
+    return tbr;
+}
+
+void PrismaticJoint::to_svg(const string file_name) const{
+
+    std::ofstream to_file(file_name + ".svg");
+
+    to_file << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << endl << endl;
+    to_file << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"600\">" << endl;
+
+    vector<string> svg_codes = this->to_svg();
+    for(string str : svg_codes){
+
+        to_file << "\t" << str << endl;
+
+    }
+
+    to_file << "</svg>";
+
+    to_file.close();
+
+}
+
