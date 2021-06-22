@@ -32,9 +32,7 @@ Rectangle::Rectangle(float x, float y, float w, float h, int * col){
     this->width = w;
     this->height = h;
 
-    this->colors[0] = col[0];
-    this->colors[1] = col[1];
-    this->colors[2] = col[2];
+    this->set_colors(col);
 
 }
 
@@ -58,6 +56,29 @@ void Rectangle::set_dimensions(const float w, const float h){
     this->width = w;
     this->height = h;
     
+}
+
+void Rectangle::set_colors(const int new_colors[3]){
+
+    for(int i = 0; i < 3; i++) {
+        if( new_colors[i] < 0 || new_colors[i] > 255) {
+            throw std::out_of_range("RGB codes should be between value 0 and 255 (trying to insert " + std::to_string(new_colors[i]) +")");
+        }
+    }
+
+    this->colors[0] = new_colors[0];
+    this->colors[1] = new_colors[1];
+    this->colors[2] = new_colors[2];
+
+}
+
+int* Rectangle::get_colors() const{
+
+    int * tbr = new int[3];
+    tbr[0] = this->colors[0];
+    tbr[1] = this->colors[1];
+    tbr[2] = this->colors[2];
+
 }
 
 string Rectangle::svg_code(string transform_string) const{

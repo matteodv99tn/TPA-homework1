@@ -32,7 +32,13 @@ namespace matteodv99tn{
             // Getter and setter funcions
             void set_relative_position(const float x, const float y);
             void set_dimensions(const float w, const float h);
+            void set_colors(const int new_colors[3]);
 
+            float get_x() const {return this->x_rel; };
+            float get_y() const {return this->y_rel; };
+            float get_width() const {return this->width; };
+            float get_height() const {return this->height; };
+            int* get_colors() const;
 
             // Other function
             string svg_code(string transform_string) const;
