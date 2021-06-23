@@ -13,7 +13,8 @@ int main(){
     
     PrismaticJoint prism(400,300,500,10);
 
-    cout << prism << endl;
+    LOG("DRAWING");
+    prism.to_svg("example");
 
     return EXIT_SUCCESS;
 

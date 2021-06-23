@@ -48,6 +48,7 @@ namespace matteodv99tn{
 
             // Other function
             string svg_code(string transform_string) const;
+            vector<string> svg_draw_width(const string transformation_string, const float offset) const;
 
 
             // Operator overload
@@ -88,12 +89,16 @@ namespace matteodv99tn{
 
             // Getter and setter function
             void set_support_dimension(const float w, const float h);
+            void set_support_color(const int newcol[3]);
             void set_prism_dimension(const float w, const float h);
+            void set_prism_color(const int newcol[3]);
             void set_stroke(const float str);
+            void set_cylinder_diameter(const float newdiameter);
+            void set_cylinder_color(const int newcol[3]);
             void set_length(const float l);
 
             // Other functions
-            vector<string> to_svg() const;
+            vector<string> to_svg(bool draw_annotation = false) const;
             void to_svg(const string file_name) const;
 
 

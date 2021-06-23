@@ -18,6 +18,10 @@ using std::istream;
 using std::endl;
 
 // DEFAULT VALUES
+#define DEF_ANNOTATIONLINE_STROKE_WIDTH 2
+#define DEF_ANNOTATIONLINE_OFFSET 3 
+#define DEF_ANNOTATIONLINE_DISTANCE 3 
+
 #define DEF_RECT_COLOR 150
 #define DEF_STROKE_LINE_WIDTH 2
 
@@ -140,6 +144,33 @@ string Rectangle::svg_code(string transform_string) const{
     return out.str();
 }
 
+vector<string> Rectangle::svg_draw_width(const string transformation_string, const float offset) const{
+
+    std::ostringstream out;
+    vector<string> tbr;
+
+    out << "<text x=\"" << this->x_rel << "\" ";
+    out << "y=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE << "\" ";
+    out << "dominant-baseline=\"middle\" text-anchor=\"middle\" class=\"annotation\" ";
+    out << transformation_string << " > ";
+    out << this->width << "</text>";
+    
+    tbr.push_back( out.str() );
+    out.clear();
+
+    out << "\t <line x1=\"" << this->x_rel - this->width/2 << "\" ";
+    out << "y1=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE + DEF_ANNOTATIONLINE_OFFSET << "\" ";
+    out << "x2=\"" << this->x_rel + this->width/2 << "\" ";
+    out << "y2=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE + DEF_ANNOTATIONLINE_OFFSET << "\" ";
+    out << "style=\"stroke:rgb(0,0,0); stroke-width:" << DEF_ANNOTATIONLINE_STROKE_WIDTH << "\" ";
+    out << transformation_string;
+    out << " />";
+
+    tbr.push_back( out.str() );
+
+    return tbr;
+}
+
 ostream& matteodv99tn::operator<<(ostream &stream, const Rectangle &rect){
 
     stream << rect.get_width() << " ";
@@ -152,7 +183,7 @@ ostream& matteodv99tn::operator<<(ostream &stream, const Rectangle &rect){
 
 }
 
-istream& operator>>(istream &stream, Rectangle &rect){
+istream& matteodv99tn::operator>>(istream &stream, Rectangle &rect){
 
     stream >> rect.width >> rect.height;
     stream >> rect.colors[0] >> rect.colors[1] >> rect.colors[2];
@@ -201,10 +232,12 @@ PrismaticJoint::PrismaticJoint(float x, float y, float len, float str) {
     this->pos_x = x;
     this->pos_y = y;
 
+    LOG("allocating rectangle")
+
     this->prism = new Rectangle( 0, 0, DEF_PRISM_WIDTH < 2 * len ? DEF_PRISM_WIDTH : len / 2, DEF_PRISM_HEIGHT );
     this->support[0] = new Rectangle(*this->prism);
     this->support[1] = new Rectangle(*this->prism);
-    this->cylinder = new Rectangle(0, 0, len, DEF_PRISM_HEIGHT / 2);
+    this->cylinder = new Rectangle(0, 0, len, DEF_PRISM_HEIGHT * 2 / 3);
 
     int color_to_set[3] {210,210,210};
     this->cylinder->set_colors(color_to_set);
@@ -288,10 +321,16 @@ void PrismaticJoint::set_support_dimension(float w, float h){
     if( w > max_width ) throw std::out_of_range("Collision detected on setting the support width to " + std::to_string(w) + "; maximum value allowed: " + std::to_string(max_width));
 
     this->support[0]->set_dimensions(w,h);
+    this->support[1]->set_dimensions(w,h);
 
 }
 
-void PrismaticJoint::set_support_dimension(float w, float h){
+void PrismaticJoint::set_support_color(const int newcol[3]){
+    this->support[0]->set_colors(newcol);
+    this->support[1]->set_colors(newcol);
+}
+
+void PrismaticJoint::set_prism_dimension(float w, float h){
 
     float max_width = this->length - this->support[0]->get_width() - this->support[1]->get_width();
     if( w > max_width ) throw std::out_of_range("Collision detected on setting the prism width to " + std::to_string(w) + "; maximum value allowed: " + std::to_string(max_width));
@@ -300,22 +339,53 @@ void PrismaticJoint::set_support_dimension(float w, float h){
 
 }
 
+void PrismaticJoint::set_prism_color(const int newcol[3]){
+    this->prism->set_colors(newcol);
+}
+
 void PrismaticJoint::set_stroke(const float str){
     
+    LOG("setting stroke")
+
     if( str < 0 || str > 100) throw std::out_of_range("Cannot create a prismatic joint with stroke percentage out of the range [0,100] (inserted " + std::to_string(str) + ")");
 
     this->stroke = str;
+    if(this->cylinder != nullptr && this->support[0] != nullptr && this->support[1] != nullptr) this->define_positions();
+
+}
+
+void PrismaticJoint::set_cylinder_diameter(const float newdiameter){
+    if(newdiameter < std::min(this->prism->get_height(), this->support[0]->get_height() )) {
+
+        this->cylinder->set_dimensions(this->cylinder->get_width(), newdiameter);
+
+    } else {
+        this->cylinder->set_dimensions(this->cylinder->get_width(), std::min(this->prism->get_height(), this->support[0]->get_height() ) * 2 / 3);
+    }
+}
+
+void PrismaticJoint::set_cylinder_color(const int newcol[3]){
+    this->cylinder->set_colors(newcol);
 }
 
 void PrismaticJoint::set_length(const float l){
-
+    LOG("setting length")
     if( l < 0 ) throw std::out_of_range("Cannot create a prismatic joint with a negative length!");
+
+    if(this->cylinder != nullptr && this->support[0] != nullptr && this->support[1] != nullptr){
+        float min_len = this->prism->get_width() + (this->support[0]->get_width() + this->support[1]->get_width())/2;
+        if(l < min_len) throw std::out_of_range("Cannot set the length to " + std::to_string(l) + " because it's gonna create collision! Minimum value allowed: " + std::to_string(min_len));
+    
+        this->cylinder->set_dimensions(l, this->cylinder->get_height());
+        this->define_positions();
+
+    }
 
     this->length = l;
     
 }
 
-vector<string> PrismaticJoint::to_svg() const {
+vector<string> PrismaticJoint::to_svg(bool draw_annotation) const {
 
     vector<string> tbr;
 
@@ -329,6 +399,15 @@ vector<string> PrismaticJoint::to_svg() const {
     tbr.push_back( this->support[0]->svg_code( trasf.str() ) );
     tbr.push_back( this->support[1]->svg_code( trasf.str() ) );
     tbr.push_back( this->prism->svg_code( trasf.str() ) );
+
+    if(draw_annotation){
+
+        tbr.push_back("<style> .annotation { font: italic 13px sans-serif; } </style>");
+
+        vector<string> annotationlines;
+        annotationlines = this->support[0]->svg_draw_width(trasf.str(),0);
+        tbr.insert(tbr.end(), annotationlines.begin(), annotationlines.end());
+    }
 
     return tbr;
 }
@@ -353,9 +432,9 @@ void PrismaticJoint::to_svg(const string file_name) const{
 
 }
 
-ostream& matteodv99tn::operator<<(ostream &stream, const PrismaticJoint &joint)  {
+ostream& matteodv99tn::operator<<(ostream &stream, const PrismaticJoint &joint) {
 
-    stream << "=== PRISMATIC GUIDE DATAS ===" << endl;
+    stream << "===== PRISMATIC GUIDE DATAS =====" << endl;
 
     stream << "(x,y) = (" << joint.pos_x << ", " << joint.pos_y << ")" << endl;
     stream << "Length = " << joint.length << endl;
