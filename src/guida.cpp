@@ -19,14 +19,14 @@ using std::endl;
 
 // DEFAULT VALUES
 #define DEF_ANNOTATIONLINE_STROKE_WIDTH 2
-#define DEF_ANNOTATIONLINE_OFFSET 3 
-#define DEF_ANNOTATIONLINE_DISTANCE 3 
+#define DEF_ANNOTATIONLINE_OFFSET 6
+#define DEF_ANNOTATIONLINE_DISTANCE 10 
 
 #define DEF_RECT_COLOR 150
 #define DEF_STROKE_LINE_WIDTH 2
 
 #define DEF_PRISM_WIDTH 50
-#define DEF_PRISM_HEIGHT 40
+#define DEF_PRISM_HEIGHT 60
 
 
 Rectangle::Rectangle(float x, float y, float w, float h){
@@ -79,8 +79,6 @@ Rectangle::Rectangle(Rectangle &other){
 
 Rectangle::~Rectangle(){
     
-    LOG("deconstructor called");
-
 }
 
 void Rectangle::set_relative_position(const float x, const float y){
@@ -150,24 +148,124 @@ vector<string> Rectangle::svg_draw_width(const string transformation_string, con
     vector<string> tbr;
 
     out << "<text x=\"" << this->x_rel << "\" ";
-    out << "y=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE << "\" ";
+    out << "y=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE + DEF_ANNOTATIONLINE_OFFSET + offset - 5 << "\" ";
     out << "dominant-baseline=\"middle\" text-anchor=\"middle\" class=\"annotation\" ";
     out << transformation_string << " > ";
     out << this->width << "</text>";
     
     tbr.push_back( out.str() );
-    out.clear();
+    out = std::ostringstream();
 
-    out << "\t <line x1=\"" << this->x_rel - this->width/2 << "\" ";
-    out << "y1=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE + DEF_ANNOTATIONLINE_OFFSET << "\" ";
+    out << "\t<line x1=\"" << this->x_rel - this->width/2 << "\" ";
+    out << "y1=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE + DEF_ANNOTATIONLINE_OFFSET + offset << "\" ";
     out << "x2=\"" << this->x_rel + this->width/2 << "\" ";
-    out << "y2=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE + DEF_ANNOTATIONLINE_OFFSET << "\" ";
+    out << "y2=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE + DEF_ANNOTATIONLINE_OFFSET + offset << "\" ";
+    out << "style=\"stroke:rgb(0,0,0); stroke-width:" << DEF_ANNOTATIONLINE_STROKE_WIDTH << "\" ";
+    out << transformation_string;
+    out << " />";
+
+    tbr.push_back( out.str() );
+    out = std::ostringstream();
+
+    out << "\t<line x1=\"" << this->x_rel - this->width/2 << "\" ";
+    out << "y1=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE + offset << "\" ";
+    out << "x2=\"" << this->x_rel - this->width/2 << "\" ";
+    out << "y2=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE + 2*DEF_ANNOTATIONLINE_OFFSET + offset << "\" ";
+    out << "style=\"stroke:rgb(0,0,0); stroke-width:" << DEF_ANNOTATIONLINE_STROKE_WIDTH << "\" ";
+    out << transformation_string;
+    out << " />";
+
+    tbr.push_back( out.str() );
+    out = std::ostringstream();
+
+    out << "\t<line x1=\"" << this->x_rel + this->width/2 << "\" ";
+    out << "y1=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE + offset << "\" ";
+    out << "x2=\"" << this->x_rel + this->width/2 << "\" ";
+    out << "y2=\"" << this->y_rel + this->height/2 + DEF_ANNOTATIONLINE_DISTANCE + 2*DEF_ANNOTATIONLINE_OFFSET + offset << "\" ";
     out << "style=\"stroke:rgb(0,0,0); stroke-width:" << DEF_ANNOTATIONLINE_STROKE_WIDTH << "\" ";
     out << transformation_string;
     out << " />";
 
     tbr.push_back( out.str() );
 
+    return tbr;
+}
+
+vector<string> Rectangle::svg_draw_height(const string transformation_string, const float offset) const{
+    LOG("Printing height")
+    std::ostringstream out;
+    vector<string> tbr;
+
+    out << "<text x=\"" << this->x_rel + this->width/2 + DEF_ANNOTATIONLINE_OFFSET + DEF_ANNOTATIONLINE_DISTANCE + offset + 3 << "\" ";
+    out << "y=\"" << this->y_rel << "\" ";
+    out << "dominant-baseline=\"middle\" text-anchor=\"start\" class=\"annotation\" ";
+    out << transformation_string << " > ";
+    out << this->height << "</text>";
+    
+    tbr.push_back( out.str() );
+    out = std::ostringstream();
+
+    out << "\t<line x1=\"" << this->x_rel + this->width/2 + DEF_ANNOTATIONLINE_OFFSET + DEF_ANNOTATIONLINE_DISTANCE + offset << "\" ";
+    out << "y1=\"" << this->y_rel - this->height/2 << "\" ";
+    out << "x2=\"" << this->x_rel + this->width/2 + DEF_ANNOTATIONLINE_OFFSET + DEF_ANNOTATIONLINE_DISTANCE + offset << "\" ";
+    out << "y2=\"" << this->y_rel + this->height/2 << "\" ";
+    out << "style=\"stroke:rgb(0,0,0); stroke-width:" << DEF_ANNOTATIONLINE_STROKE_WIDTH << "\" ";
+    out << transformation_string;
+    out << " />";
+
+    tbr.push_back( out.str() );
+    out = std::ostringstream();
+
+    out << "\t<line x1=\"" << this->x_rel + this->width/2 + DEF_ANNOTATIONLINE_DISTANCE + offset << "\" ";
+    out << "y1=\"" << this->y_rel - this->height/2 << "\" ";
+    out << "x2=\"" << this->x_rel + this->width/2 + DEF_ANNOTATIONLINE_DISTANCE + 2*DEF_ANNOTATIONLINE_OFFSET + offset << "\" ";
+    out << "y2=\"" << this->y_rel - this->height/2 << "\" ";
+    out << "style=\"stroke:rgb(0,0,0); stroke-width:" << DEF_ANNOTATIONLINE_STROKE_WIDTH << "\" ";
+    out << transformation_string;
+    out << " />";
+
+    tbr.push_back( out.str() );
+    out = std::ostringstream();
+
+    out << "\t<line x1=\"" << this->x_rel + this->width/2 + DEF_ANNOTATIONLINE_DISTANCE + offset << "\" ";
+    out << "y1=\"" << this->y_rel + this->height/2 << "\" ";
+    out << "x2=\"" << this->x_rel + this->width/2 + DEF_ANNOTATIONLINE_DISTANCE + 2*DEF_ANNOTATIONLINE_OFFSET + offset << "\" ";
+    out << "y2=\"" << this->y_rel + this->height/2 << "\" ";
+    out << "style=\"stroke:rgb(0,0,0); stroke-width:" << DEF_ANNOTATIONLINE_STROKE_WIDTH << "\" ";
+    out << transformation_string;
+    out << " />";
+
+    tbr.push_back( out.str() );
+
+    return tbr;
+}
+
+vector<string> Rectangle::svg_draw_cross(const string transformation_string) const{
+
+    vector<string> tbr;
+
+    std::ostringstream out;
+    
+    out << "\t<line x1=\"" << this->x_rel - this->width/2  << "\" ";
+    out << "y1=\"" << this->y_rel - this->height/2 << "\" ";
+    out << "x2=\"" << this->x_rel + this->width/2 << "\" ";
+    out << "y2=\"" << this->y_rel + this->height/2 << "\" ";
+    out << "style=\"stroke:rgb(0,0,0); stroke-width:" << DEF_ANNOTATIONLINE_STROKE_WIDTH << "\" ";
+    out << transformation_string;
+    out << " />";
+
+    tbr.push_back(out.str());
+    out = std::ostringstream();
+    
+    out << "\t<line x1=\"" << this->x_rel - this->width/2  << "\" ";
+    out << "y1=\"" << this->y_rel + this->height/2 << "\" ";
+    out << "x2=\"" << this->x_rel + this->width/2 << "\" ";
+    out << "y2=\"" << this->y_rel - this->height/2 << "\" ";
+    out << "style=\"stroke:rgb(0,0,0); stroke-width:" << DEF_ANNOTATIONLINE_STROKE_WIDTH << "\" ";
+    out << transformation_string;
+    out << " />";
+    tbr.push_back(out.str());
+    
     return tbr;
 }
 
@@ -400,26 +498,48 @@ vector<string> PrismaticJoint::to_svg(bool draw_annotation) const {
     tbr.push_back( this->support[1]->svg_code( trasf.str() ) );
     tbr.push_back( this->prism->svg_code( trasf.str() ) );
 
+    vector <string> crosses;
+    crosses = this->support[0]->svg_draw_cross(trasf.str());
+    tbr.insert( tbr.end(), crosses.begin(), crosses.end() );
+    crosses = this->support[1]->svg_draw_cross(trasf.str());
+    tbr.insert( tbr.end(), crosses.begin(), crosses.end() );
+
     if(draw_annotation){
 
         tbr.push_back("<style> .annotation { font: italic 13px sans-serif; } </style>");
 
         vector<string> annotationlines;
-        annotationlines = this->support[0]->svg_draw_width(trasf.str(),0);
+        annotationlines = this->support[0]->svg_draw_width(trasf.str(),5);
+        tbr.insert(tbr.end(), annotationlines.begin(), annotationlines.end());
+
+        annotationlines = this->prism->svg_draw_width(trasf.str(),5);
+        tbr.insert(tbr.end(), annotationlines.begin(), annotationlines.end());
+    
+        annotationlines = this->cylinder->svg_draw_width(trasf.str(), std::max(this->support[0]->get_height(), this->prism->get_height()) *2 /3);
+        tbr.insert(tbr.end(), annotationlines.begin(), annotationlines.end());
+    
+        annotationlines = this->cylinder->svg_draw_height(trasf.str(), this->support[1]->get_width()/2);
+        tbr.insert(tbr.end(), annotationlines.begin(), annotationlines.end());
+
+        annotationlines = this->support[1]->svg_draw_height(trasf.str(), this->support[1]->get_width()/2+20);
+        tbr.insert(tbr.end(), annotationlines.begin(), annotationlines.end());
+
+        annotationlines = this->prism->svg_draw_height(trasf.str(), this->stroke < 70 ? 0 : this->prism->get_width() - 50 );
         tbr.insert(tbr.end(), annotationlines.begin(), annotationlines.end());
     }
 
     return tbr;
 }
 
-void PrismaticJoint::to_svg(const string file_name) const{
+void PrismaticJoint::to_svg(const string file_name,bool draw_annotation) const{
 
+    LOG("Saving Prismatic Guide to File")
     std::ofstream to_file(file_name + ".svg");
 
     to_file << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << endl << endl;
     to_file << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"800\" height=\"600\">" << endl;
 
-    vector<string> svg_codes = this->to_svg();
+    vector<string> svg_codes = this->to_svg(draw_annotation);
     for(string str : svg_codes){
 
         to_file << "\t" << str << endl;
@@ -429,7 +549,7 @@ void PrismaticJoint::to_svg(const string file_name) const{
     to_file << "</svg>";
 
     to_file.close();
-
+    LOG("Process finished")
 }
 
 ostream& matteodv99tn::operator<<(ostream &stream, const PrismaticJoint &joint) {

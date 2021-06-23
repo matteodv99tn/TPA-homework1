@@ -48,7 +48,9 @@ namespace matteodv99tn{
 
             // Other function
             string svg_code(string transform_string) const;
-            vector<string> svg_draw_width(const string transformation_string, const float offset) const;
+            vector<string> svg_draw_width(const string transformation_string, const float offset = 0) const;
+            vector<string> svg_draw_height(const string transformation_string, const float offset = 0) const;
+            vector<string> svg_draw_cross(const string transformation_string) const;
 
 
             // Operator overload
@@ -99,8 +101,7 @@ namespace matteodv99tn{
 
             // Other functions
             vector<string> to_svg(bool draw_annotation = false) const;
-            void to_svg(const string file_name) const;
-
+            void to_svg(const string file_name, bool draw_annotation = false) const;
 
             // Operator overloads
             friend std::ostream& operator<<(std::ostream &stream, const PrismaticJoint &joint);
