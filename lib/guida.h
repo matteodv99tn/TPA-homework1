@@ -96,6 +96,9 @@ namespace matteodv99tn{
             vector<string> to_svg() const;
             void to_svg(const string file_name) const;
 
+
+            // Operator overloads
+            friend std::ostream& operator<<(std::ostream &stream, const PrismaticJoint &joint);
     };
 
 }

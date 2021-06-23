@@ -152,7 +152,7 @@ ostream& matteodv99tn::operator<<(ostream &stream, const Rectangle &rect){
 
 }
 
-istream& matteodv99tn::operator>>(istream &stream, Rectangle &rect){
+istream& operator>>(istream &stream, Rectangle &rect){
 
     stream >> rect.width >> rect.height;
     stream >> rect.colors[0] >> rect.colors[1] >> rect.colors[2];
@@ -353,3 +353,18 @@ void PrismaticJoint::to_svg(const string file_name) const{
 
 }
 
+ostream& matteodv99tn::operator<<(ostream &stream, const PrismaticJoint &joint)  {
+
+    stream << "=== PRISMATIC GUIDE DATAS ===" << endl;
+
+    stream << "(x,y) = (" << joint.pos_x << ", " << joint.pos_y << ")" << endl;
+    stream << "Length = " << joint.length << endl;
+    stream << "Stroke = " << joint.stroke << "%" << endl;
+    stream << "Cylinder diameter = " << joint.cylinder->get_height() << endl;
+    stream << "Prism dimension: " << joint.prism->get_width() << "x" << joint.prism->get_height() << endl;
+    stream << "Left support dimension: " << joint.support[0]->get_width() << "x" << joint.support[0]->get_height() << endl;
+    stream << "Right support dimension: " << joint.support[1]->get_width() << "x" << joint.support[1]->get_height() << endl;
+
+    return stream;
+
+}
